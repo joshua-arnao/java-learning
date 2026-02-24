@@ -1,39 +1,60 @@
 # JAVA - ☕
 
-## 1. ¿Qué es Java?
+## 1. ¿Qué es Java realmente?
 
-Java es un lenguaje de alto nivel y una plataforma de ejecución. Es el estándar en la industria bancaria y Fintech debido a su robustez y seguridad.
+Java es un lenguaje de **alto nivel** y una **plataforma de ejecución**. Es el estándar en la industria bancaria y Fintech debido a su **robustez** y **seguridad** No solo escribes código, construyes sistemas que corren en un entorno controlado.
 
 Sus pilares fundamentales:
-- **Fuertemente Tipado y Verboso**: Java prioriza la claridad sobre la brevedad. Cada dato tiene un tipo definido ```int balance```, lo que evita errores accidentales. **"Verbozo"** significa que el código se explica solo: es mejor ```int accountBalance``` que un ```int b```.
+- **Fuertemente Tipado y Verboso**: Java prioriza la claridad sobre la brevedad. Cada dato tiene un tipo definido `int balance`, lo que evita errores accidentales. **"Verbozo"** significa que el código se explica solo: es mejor `int accountBalance` que un `int b`.
 
-- **Orientado a Objetos (POO)**: Organiza el código imitando conceptos del mundo real (Clientes, Cuentas, Transacciones), permitiendo crear sistemas complejos y abstractos (ocultando la complejidad técnica del usuario).
+- **Orientado a Objetos (POO)**: Organiza el código imitando conceptos del mundo real (Clientes, Cuentas, Transacciones), permitiendo crear sistemas complejos mediante modelos manejables.
 
-- **Abstracción (El Enfoque)**: Java nos permite enfocarnos en "qué hace" un objeto en lugar de "cómo lo hace". Es la capacidad de simplificar problemas complejos del mundo real (como un sistema bancario) en modelos manejables. Sin abstracción, el código sería un caos de detalles técnicos imposibles de mantener.
-
+- **Abstracción (El Enfoque)**: Java nos permite enfocarnos en "qué hace" un objeto en lugar de "cómo lo hace". Es la capacidad de simplificar problemas complejos del mundo real en modelos.
 - **Multihilos (Multithreading)**: Capacidad nativa para realizar tareas en paralelo. Fundamental para que un servidor procese miles de pagos simultáneos sin colapsar.
 
-- **Independiente del Hardware**: Gracias a su lema: "Write once, run anywhere" (Escríbelo una vez, ejecútalo en cualquier lugar).
+- **Independiente del Hardware**: Gracias a su lema: *"Write once, run anywhere"* (Escríbelo una vez, ejecútalo en cualquier lugar). El código que haces en tu laptop funcionará exactamente igual en el servidor gigante del banco.
 
 ## 2. El Ecosistema: ¿Qué instalar?
 Para trabajar en Java, debes conocer la diferencia entre estas herramientas:
 
 | Siglas | Nombre | ¿Para qué sirve? |
 |--------|--------|------------------|
-| **JDK** | Java Delopment Kit | **Caja de herramientas del programador**. Contiene el compilador (javac). |
-| **JRE** | Java Runtime Eviroment | **Caja para el usuario**. Solo sirve ejecutar programas ya hechos |
-| **JVM** | Java Virtual Machine | **El motor**, Traduce el código universal al lenguaje de tu pc |
+| **JDK** | Java Delopment Kit | **Caja de herramientas del programador**. Contiene el compilador (`javac`) y lo necesario para crear software. |
+| **JRE** | Java Runtime Eviroment | **Capa para el usuario**. Es el entorno necesario para que alguien pueda ejecutar tu programa ya terminado. |
+| **JVM** | Java Virtual Machine | **El motor**. Es la pieza que traduce el código universal al lenguaje específico de tu PC. |
+
+### Flujo del Ecosistema
+Este diagrama muestra cómo el JDK contiene al JRE, y este a su vez protege al motor (JVM).
+
+```mermaid
+graph TD
+    subgraph JDK [JDK - Java Development Kit]
+        direction TB
+        Comp[Compilador 'javac']
+        Doc[Herramientas de Documentación]
+        subgraph JRE [JRE - Java Runtime Environment]
+            direction TB
+            Lib[Librerías del Sistema]
+            subgraph JVM [JVM - Java Virtual Machine]
+                Motor[Motor de Ejecución]
+            end
+        end
+    end
+
+    style JDK fill:#f9f9f9,stroke:#333,stroke-width:2px
+    style JRE fill:#e1f5fe,stroke:#01579b
+    style JVM fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
+```
 
 ## 3. ¿Cómo funciona Java??
-Java no corre directament en tu procesador; corre una simulación segura llamada JVM.
-
+Java no corre directamente en tu procesador; corre dentro de una simulación segura llamada **JVM**. Esto crea una capa de seguridad (Sandbox) que protege a la computadora de errores del programa.
 
 
 | Código Fuente | Compilador | Bytecode | JVM |
 |---------------|------------|----------|-----|
-| ```.java``` | ```javac``` | ```.class``` | Java Virtual Machine|
-|El Manuscrito | El traductor estricto | Idioma Universal | El intérprete y Motor |
-| Es lo que tu esribes | El compilador toma tu archivo ```.java``` y lo revisa de arriba a abajo para validar que toda la sintaxis sea correcta. Si todo está bien, crea un archivo ```.class``` que contiene **Bytecode**.|Es el lenguaje intermedio. No es código máquina, sino un conjunto de instrucciones optimizadas que solo la JVM entiende. | El "simulador" que traduce el Bytecode a lenguaje real de tu procesador (Windows, Mac, Linux). |
+| `.java` | `javac` | `.class` | Java Virtual Machine|
+| **El Manuscrito** | **El traductor estricto** | **Idioma Universal** | **El intérprete y Motor** |
+| Es lo que tú escribes con lógica humana. | Revisa tu archivo de arriba a abajo. Si hay un error de sintaxis, se detiene. | Instrucciones optimizadas que solo la JVM entiende. No es código máquina todavía. | El "simulador" que traduce el Bytecode a lenguaje real de tu procesador (Windows, Mac, Linux). |
 
 
 ```mermaid
@@ -64,28 +85,16 @@ graph TD
     class D jvm;
 ```
 
+## 4. Gestión de Memoria: Stack vs. Heap
+Para entender la memoria, primero debemos saber que Java separa los Planos (Clases) de los Objetos Reales.
 
-
-## 4. Programación Orientada a Objetos (POO)
-
-Java nos obliga a pensar en Moldes y Productos.
-
-### 4.1 El concepto de Clase (`Class`) - El Molde
-
-Una `Clase` es la unidad básica en Java. Como vimos en la definición, Java es **Verboso** y **Abstracto**; por lo tanto, no puedes simplemente escribir código "al aire". Todo debe pertencer a una clase que define los **atributos** (datos) y **comportamientos** (métodos) que tendrá un objeto.
-
-### 4.2 El concepto de Objeto - La Instancia
-El **Objeto** es el producto real creado a partir del modelo. Aquí es donde entra la JVM 
-
-## El corazón de la ejecución: Stack vs. Heap
-Cuanto tu programa Java corre, la JVM reserva memoria de 2 formas distintas. el **Stack** es para tareas rápidas y **Heap** es para alamcenar productos gigantes.
-
+### Tabla comparativa de Memoria
 | Característica | **Stack** (La Pila) | **Heap** (El Monton) |
 |----------------|---------------------|----------------------|
 | **¿Qué guarda?** | Variables locales y llamadas a métodos. | **Objetos** y variables de instancia. |
 | **Orden** | LIFO (Last In First Out). Muy Organizado. | Desordenado. Los objetos se guardan donde haya espacio. |
-| **Ciclo de Vida** | Vive solo mientras el método se ejecuta. | Vive mientras alguien lo esté usando |
-| **Velocidad** | Extremadamente rápido | Más lento (requiere más gestión) |
+| **Ciclo de Vida** | Vive solo mientras el método se ejecuta. | Vive mientras el objeto sea necesario |
+| **Velocidad** | Extremadamente rápido | Más lento (requiere gestión del Garbage Collector) |
 
 ### JVM MEMORIA
 ```mermaid
@@ -96,29 +105,98 @@ graph LR
         Heap["<b>Heap Memory</b><br/>(Los Objetos Reales)"]
     end
 
-    UserCode[Código: Persona p = new Persona] --> Ref[Variable 'p' en el Stack]
-    Ref -- "Apunta a -->" --> Obj[Objeto 'Persona' en el Heap]
+    UserCode[Código: Person p = new Person] --> Ref[Variable 'p' en el Stack]
+    Ref -- "Apunta a -->" --> Obj[Objeto 'Person' en el Heap]
 
     style Stack fill:#fff3e0,stroke:#ff9800
     style Heap fill:#e8f5e9,stroke:#4caf50
     style JVM_Memory fill:#f5f5f5,stroke:#333
 ```
 
-### ¿Cómo interactuan?
-Aquí es donde tu concepto de **"Molde y Producto"** se conecta con la memoria:
+### 4.1 Stack (Pila): Tareas Rápidas
+Imagina una pila de platos. EL último que pones es el primero que quitas (**LIFO**).
 
-1. **La referencia (En el Stack)**: Cuando escribes ```Person person1```, estas creando un pequeño espacio en el **Stack** llamado ```person1```. Es como tener la dirección de un casa anotada en un papel.
+- **¿Qué guarda?** Variables locales (las que viven dentro de un método) y las "direcciones" (referencias) de los objetos.
 
-2. **El Objeto (En el Heap)**: Cuando escribes ```new Person()```, la JVM busca espacio en el **Heap** y construye el objeto real (el producto).
+- **Velocidad**: Es extremadamente veloz.
 
-3. **El Vínculo**: El Stack guarda la "dirección" que apunta hacia el objeto en el Heap.
+- **Ciclo de vida**: Tan pronto el método termina, la memoria se limpia automáticamente. Es memoria de "corto plazo".
 
-## El recolector de basura (Garbage Collector)
+### 4.2 Heap - Monton: El Gran almacén
+Imagina un almacen gigante y un poco desordenado donde guardas los productos terminados.
+
+- **¿Qué guarda?** Los **Objetos Reales** (los productos que creaste con tus moldes).
+
+- **Ciclo de vida**: Vive mientras alguien lo esté usando. Es memoria de "largo plazo".
+
+### 4.3 ¿Cómo interactúan?
+Este es el concepto clave:
+
+1. **La referencia (En el Stack)**: Cuando escribes `Person person1`, estas creando un pequeño espacio en el **Stack** llamado `person1`. Es la "etiqueta" o el control remoto. Es como tener la dirección de un casa anotada en un papel.
+
+2. **El Objeto (En el Heap)**: Al escribir `new Person()`, la JVM busca espacio en el Heap y construye el objeto físico.
+    >⚠️ Ojo: Si el dato es un **Primitivo** (como `int age = 10`), el valor se guarda directamente en el Stack, ocupando el mínimo espacio y siendo ultra rápido.
+
+3. **El Vínculo**: El control remoto en tu mano (Stack) apunta al televisor que está en la sala (Heap). ¡Si pierdes el control remoto, el televisor sigue ahí, pero ya no puedes usarlo!
+
+```mermaid
+graph LR
+    subgraph JVM_Memory [Memoria de la JVM]
+        direction TB
+        Stack["<b>Stack Memory</b><br/>(Primitivos y Referencias)"]
+        Heap["<b>Heap Memory</b><br/>(Los Objetos Reales)"]
+    end
+
+    UserCode[Person p = new Person] --> Ref[Variable 'p' en el Stack]
+    Ref -- "Apunta a -->" --> Obj[Objeto 'Person' en el Heap]
+
+    style Stack fill:#fff3e0,stroke:#ff9800
+    style Heap fill:#e8f5e9,stroke:#4caf50
+```
+
+## 5. El recolector de basura (Garbage Collector)
 Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Collector (GC)**, un proceso que vive en el **Heap**.
 
-- **¿Qué hace?** Escanea el Heap buscando objetos que ya nadie usa (objetos a los que el Stack ya no apunta).
+- **¿Qué hace?** Escanea el Heap buscando objetos que ya nadie usa (objetos a los que el Stack ya no apunta, es decir, objetos que perdieron su "control remoto").
 
-- **¿Por qué es importante?** En lenguajes antiguos como C++, tú tenías que limpiar la memoria manualmente. Si se te olvidaba, tu programa "explotaba". En Java, el GC pasa la escoba por ti, permitiéndote enfocarte en la lógica de negocio.
+- **¿Por qué es importante?** En lenguajes antiguos como C++, tú tenías que limpiar la memoria manualmente. Si se te olvidaba, tu programa "explotaba". En Java, el Garbage Collector pasa la escoba por ti.
+
+
+## 6. Programación Orientada a Objetos (POO): Moldes y Productos
+
+Para que Java funcione, debemos dejar de pensar en líneas de código y empezar a pensar en arquitectura.
+### 6.1 El concepto de Clase (`Class`) - El Molde
+
+Es la unidad básica. Java es Verboso y Abstracto, por lo que todo debe estar dentro de un molde. La clase define:
+
+Atributos: Los datos (ej. `double saldo`).
+
+Comportamientos: Los métodos o acciones (ej. `void retirar()`).
+
+### 6.2 El concepto de Objeto - La Instancia
+Es el producto real que ocupa espacio en la memoria (Heap). Es cuando el molde se vuelve "real" y contiene datos específicos (ej. "La cuenta de Juan con $500").
+
+
+## 7. Tipos de Datos: Los "Ladrillos" de Java
+Como ya entendemos que el Stack es para cosas rápidas y el Heap es para objetos complejos, ahora debemos conocer con qué materiales vamos a construir. En Java existen dos grandes familias:
+
+### 7.1 Tipos Primitivos (Viven 100% en el Stack)
+Son los tipos de datos más básicos. No son objetos, no tienen métodos, solo son valores puros. Son extremadamente rápidos. Java tiene 8, pero en Fintech usaremos principalmente estos 4:
+
+| Tipo | Tamaño | ¿Para qué se usa en un Banco? | Ejemplo |
+|------|--------|-------------------------------|---------|
+| `int` | 32 bits | Números enteros (IDs de usuario, contadores).| `int userId = 1024` |
+| `double` | 64 bits | Números con decimales (Tasas de interés, porcentajes). | `double interestRate = 5.5` |
+| `boolean` | 1 bit | Estados binarios (¿Está activa la cuenta? ¿Es fraude?). | `boolean isAccountActive = true`  |
+| `long` | 64 bits | Números enteros muy grandes (Saldos en centavos, timestamps). | `long transactionId = 9876543210L` |
+
+### 7.2 Tipos de Referencia (Viven en el Heap)
+Son objetos. El más famoso es el String (cadenas de texto). A diferencia de los primitivos, estos pueden ser `null`(estar vacíos) y tienen métodos (acciones).
+
+- Ejemplo: `String customerName = "Joshua Arnao"`;
+
+- Aquí, `customerNam` es la referencia en el Stack y `"Joshua Arnao"` es el objeto en el Heap.
+
 
 
 ## L.1 ¿Qué es un **Servlet**??
