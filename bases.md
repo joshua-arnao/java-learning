@@ -119,3 +119,48 @@ Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Col
 - **¿Qué hace?** Escanea el Heap buscando objetos que ya nadie usa (objetos a los que el Stack ya no apunta).
 
 - **¿Por qué es importante?** En lenguajes antiguos como C++, tú tenías que limpiar la memoria manualmente. Si se te olvidaba, tu programa "explotaba". En Java, el GC pasa la escoba por ti, permitiéndote enfocarte en la lógica de negocio.
+
+
+## L.1 ¿Qué es un **Servlet**??
+- Es una "Clase" especial de **Java** que se utiliza como punto intermedio entre una página **JSP** y el **servidor web** donde está alojada la lógica de una aplicación
+
+- Un **servlet** se encaga de recibir **peticiones o request** desde un *cliente*, tratarlas y analizar si es necesario realizar anula solicitud en particular o brindar una determinada **respuesta o response**.
+
+- Para poder tratar cada una dwe las peticiones utiliza una serie de mpetodos donde dependiendo del verbo por el cual ser reciba la petición (GET, POST, PUT, DELETE, etc)
+
+### Métods de un servelete
+Los ***servelets** tienen diferentes métidos que puede ser utilizado dependiento del tipo de solicitud que reciban por parte del cliente. Los dos más usado son:
+
+- **doGet()**: Es el método encargado de recibir las solicitudes que provienen mediante GET.
+
+- **doPost()**: Es el método encargado de recibir solicitudes que provienne mendaiante el POST.
+
+```mermaid
+flowchart TD
+    A["👤 Usuario (Cliente)"] 
+    B["📄 Formulario JSP / HTML"]
+    C["📡 HTTP Request (POST)"]
+    D["🧠 Servlet<br/>doPost(HttpServletRequest, HttpServletResponse)"]
+    E["⚙️ Lógica de Negocio / Procesamiento"]
+    F["📦 Generación de Respuesta (JSP / Datos)"]
+    G["📨 HTTP Response"]
+
+    A -->|Interactúa| B
+    B -->|Envía| C
+    C --> D
+    D --> E
+    E --> F
+    F --> G
+    G -->|Renderiza en Navegador| A
+```
+
+### Pasar datos a un Servlet con getParameter()
+El metodo **getParametr()** es una función importante en los **servlets** de **Java** que se utiliza para enviar datos desde un formulario HTML o para recuperar los parámetros de una solicitud HTTP GET en un servlet.
+
+Estee método permite que los servlets accedan a la información proporcionada por el cliente a través de una solicitud HTTP
+
+```java
+String name = request.getParameter("txtNombre");
+```
+
+> El método ```getParameter()``` siempre devuelve un ```String```
