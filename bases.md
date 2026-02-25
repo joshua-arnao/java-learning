@@ -241,4 +241,52 @@ Estee método permite que los servlets accedan a la información proporcionada p
 String name = request.getParameter("txtNombre");
 ```
 
-> El método ```getParameter()``` siempre devuelve un ```String```
+> El método `getParameter()` siempre devuelve un `String`
+
+### ¿Qué son las sesiones?
+una sesión HTTP es un espacio de memoria en el servidor asociado a un usuario especifico. El servidor identifica a cada cliente mediante una ID única de sesión y le permite guardar y/o leer datos a lo lardo de múltiples peticiones(reuqest).
+En Java EE este mecanismoa esta implementado mediante la interfaz javx.`serverlet.http.HttpSession` y cada vez que el servidor necesita guardar datos para un usuario, crea un objeto HTTP SESSION.
+
+### ¿Cómo se identifica una sesión?
+El servidor genera un identificador único llamado: JSESSIONID. Este ID normalmente se envía al cliente en una cookie. Por ejemplo:
+`Set-Cookie: JSESSIONID=AEF2348CC12F; Path=/; HttpOnly`
+
+A partir de esto, en cada request siguiente, el navegador lo enviará automáticamente:
+`Cookie: JSESSIONID=AEF2348CC12F`
+
+Por otro lado, si el cliente tiene cookies desactivadas, el servidor puede usar URL rewriting, agregando el ID al final de la URL:
+`http://miweb.com/tienda;jsessionid=AEF2348CC12F`
+
+### ¿Qué son las cookies?
+Son pequeños archivos de texto que el servidor envía al navegador del usuario y que éste almacena localmente. Su función principal es **recordar información entre vistas o peticiones**, permitiendo que el sitio mantenga cierto estado o preferencias del usuario.
+
+Cada cookie esta compuesta por un **nombre**, un **valor** y opcionalmente atributos como tiempo de expiración, path, dominio y banderas de seguridad (HttpOnly o Secure).
+
+
+### ¿Cómo se crea una sesión en Java Enterprice Edition?
+Para crear una sesión en Java EE debemos dirigirnos a alguno de los servlets donde queramos trabajar con la sesión y crearla de la sigueinte manera
+`HttpSession session = request.getSession();`
+
+Por otro lado, si queremos obtner una sesión ya existente (en caso de que exita) sin la necesidad de crear una nueva, podemos hacerlo mendiante:
+`HttpSession session = request.getSession();`
+
+### ¿Cómo guardar y obtener atributos de una sesión?
+Para guardar atributos o datos en una sesión, vamos a utilizar el método `setAttribute` de la siguiente manera:
+```java
+session.setAttribute("usuario", "Suscribite TodoCode");
+session.setAttribute("rol", "ADMIN");
+```
+
+Como primer parámetro siempre va el `<<name>>` que queremos ponerle al atributo dentro de la sesión como segundo el `<<valor>>` asignado
+
+Por otro lado para leer los atributos se utilzia el método `getAttribute` de la siguiente manera:
+
+```java
+String usuario = (String) session.getAttribute("usuario");
+String rol = (String) session.getAttribute("rol");
+```
+
+Es imporantante siempre `<<castear>>`el tipo de dato que vamos a recibir e indiacar el **nombre** del atributo que queremos buscar.
+
+Finalemnte tambien es posible eliminar atributos de las sesiones. Para esto, se utiliza el método removeAttribute de la siguiente manera:
+`session.removeAttribute("usuario");`
