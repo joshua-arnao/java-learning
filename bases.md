@@ -197,6 +197,17 @@ Son objetos. El más famoso es el String (cadenas de texto). A diferencia de los
 
 - Aquí, `customerNam` es la referencia en el Stack y `"Joshua Arnao"` es el objeto en el Heap.
 
+## 8. Punto de partida: public static void main
+Todo progrma en Java necesita un lugar por donde empezar. Sin esta línea, la JVM no sabe que "hilo" jalar para inciar el proceso.
+```java
+public static void main(String[] args) {
+    // Aquí empieza la magia
+}
+```
+
+### ¿Qué significa cada palabra
+
+
 
 
 ## L.1 ¿Qué es un **Servlet**??
@@ -290,3 +301,13 @@ Es imporantante siempre `<<castear>>`el tipo de dato que vamos a recibir e india
 
 Finalemnte tambien es posible eliminar atributos de las sesiones. Para esto, se utiliza el método removeAttribute de la siguiente manera:
 `session.removeAttribute("usuario");`
+
+### Usar sesiones y a y sus atributos desde JSP
+La ventaka de las sesiones y duardar atributos en ellas es que podemos utilizar los últimos mencionados en cualquier apartado o JSP que tengamso en la aplicación siempre y cuando la sesión se mantenga activa.
+
+Obtener el atributo usuario que esta en la sesión:
+```java
+<%
+    String usuario = (String) session.getAttribute("usuario");
+%>
+```
