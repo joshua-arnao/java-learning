@@ -318,3 +318,23 @@ Obtener el atributo usuario que esta en la sesión:
 ## ¿Que es Java Persistence API?
 JPA es un ORM(Object Relational Mapping) que tien como objetivo lograr la persistencia de datos entre una aplicación desarrollada en JAva y una base de datos.
 JPA busca **traducir el modelo de las clases Java** a **un modeloado relacional en una base de datos**, posibilitando al pogramdor elegir quee clases u objetos quiere persistir.
+
+### ¿Qué en un ORM?
+Es una herramienta que:
+-> Convierte objetos de Java
+en
+-> tablas de base de datos
+Y vicerversa
+
+Es como un conjunto de reglas que dicen:
+- Cómo mapear objetos a tablas
+- Cómo guardar datos
+- Cómo hacer consultas
+- Cómo manejar relaciones
+
+Pero JPA no hace el trabajo directamente.
+
+### Como funciona JPA
+JPA se vale de una serie de paeos que se deben realizar sobre cada uno de los elementos de una clase, los mims se reepresentan mendainte annotations (@).
+
+JPA cuenta con proveedores de JPA, entre ellos: Eclipselink, Hibernate, Toplink entre otros
