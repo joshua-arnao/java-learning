@@ -311,3 +311,10 @@ Obtener el atributo usuario que esta en la sesión:
     String usuario = (String) session.getAttribute("usuario");
 %>
 ```
+
+
+
+
+## ¿Que es Java Persistence API?
+JPA es un ORM(Object Relational Mapping) que tien como objetivo lograr la persistencia de datos entre una aplicación desarrollada en JAva y una base de datos.
+JPA busca **traducir el modelo de las clases Java** a **un modeloado relacional en una base de datos**, posibilitando al pogramdor elegir quee clases u objetos quiere persistir.
