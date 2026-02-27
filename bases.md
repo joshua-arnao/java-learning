@@ -5,11 +5,14 @@
 Java es un lenguaje de **alto nivel** y una **plataforma de ejecución**. Es el estándar en la industria bancaria y Fintech debido a su **robustez** y **seguridad** No solo escribes código, construyes sistemas que corren en un entorno controlado.
 
 Sus pilares fundamentales:
-- **Fuertemente Tipado y Verboso**: Java prioriza la claridad sobre la brevedad. Cada dato tiene un tipo definido `int balance`, lo que evita errores accidentales. **"Verbozo"** significa que el código se explica solo: es mejor `int accountBalance` que un `int b`.
+- **Fuertemente Tipado**: Java prioriza la claridad sobre la brevedad. Cada dato tiene un tipo definido `int balance`, Esto evita errores de desbordamiento o tipos incompatibles en cálculos críticos.
+
+- **"Verboso"** significa que el código se explica solo: es mejor `int accountBalance` que un `int b`.
 
 - **Orientado a Objetos (POO)**: Organiza el código imitando conceptos del mundo real (Clientes, Cuentas, Transacciones), permitiendo crear sistemas complejos mediante modelos manejables.
 
 - **Abstracción (El Enfoque)**: Java nos permite enfocarnos en "qué hace" un objeto en lugar de "cómo lo hace". Es la capacidad de simplificar problemas complejos del mundo real en modelos.
+
 - **Multihilos (Multithreading)**: Capacidad nativa para realizar tareas en paralelo. Fundamental para que un servidor procese miles de pagos simultáneos sin colapsar.
 
 - **Independiente del Hardware**: Gracias a su lema: *"Write once, run anywhere"* (Escríbelo una vez, ejecútalo en cualquier lugar). El código que haces en tu laptop funcionará exactamente igual en el servidor gigante del banco.
@@ -19,11 +22,11 @@ Para trabajar en Java, debes conocer la diferencia entre estas herramientas:
 
 | Siglas | Nombre | ¿Para qué sirve? |
 |--------|--------|------------------|
-| **JDK** | Java Delopment Kit | **Caja de herramientas del programador**. Contiene el compilador (`javac`) y lo necesario para crear software. |
-| **JRE** | Java Runtime Eviroment | **Capa para el usuario**. Es el entorno necesario para que alguien pueda ejecutar tu programa ya terminado. |
-| **JVM** | Java Virtual Machine | **El motor**. Es la pieza que traduce el código universal al lenguaje específico de tu PC. |
+| **JDK** | Java Delopment Kit | **Caja de herramientas**. Contiene el compilador (`javac`), herramientas de documentación y el JRE. Es lo que instala el programador |
+| **JRE** | Java Runtime Eviroment | **Entorno de Ejecución**. Es el paquete mínimo necesario para que un usuario final pueda correr una aplicación Java. |
+| **JVM** | Java Virtual Machine | **El motor de la ejecución**. Traduce el código universal (Bytecode) a instrucciones que el procesador de la computadora (Intel, Apple, AMD) entiende. |
 
-### Flujo del Ecosistema
+### Diagrama de Jerarquía del Ecosistema
 Este diagrama muestra cómo el JDK contiene al JRE, y este a su vez protege al motor (JVM).
 
 ```mermaid
@@ -46,90 +49,35 @@ graph TD
     style JVM fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
 
-## 3. ¿Cómo funciona Java??
-Java no corre directamente en tu procesador; corre dentro de una simulación segura llamada **JVM**. Esto crea una capa de seguridad (Sandbox) que protege a la computadora de errores del programa.
+## 3. Flujo de Ejecución y Seguridad - Sandbox
+Java no corre directamente sobre el hardware. Se ejecuta dentro de una **JVM**, lo que crea un entorno seguro o **Sandbox**, protegiendo al sistema operativo de código malicioso o errores graves.
 
 
-| Código Fuente | Compilador | Bytecode | JVM |
-|---------------|------------|----------|-----|
-| `.java` | `javac` | `.class` | Java Virtual Machine|
-| **El Manuscrito** | **El traductor estricto** | **Idioma Universal** | **El intérprete y Motor** |
-| Es lo que tú escribes con lógica humana. | Revisa tu archivo de arriba a abajo. Si hay un error de sintaxis, se detiene. | Instrucciones optimizadas que solo la JVM entiende. No es código máquina todavía. | El "simulador" que traduce el Bytecode a lenguaje real de tu procesador (Windows, Mac, Linux). |
+| Fase | Componente | Resultado | Descripción |
+|------|------------|-----------|-------------|
+| **Escritura** | Código Fuente  | `.java` | El archivo de texto con lógica humana. |
+| **Compilación** | `.javac`  | `.class` | El "Traductor Estricto" genera Bytecode (instrucciones optimizadas). |
+| **Interpretación** | **JVM** | Ejecución | El motor traduce el Bytecode a lenguaje máquina en tiempo real. |
 
-
-```mermaid
-graph TD
-    %% Definición de Estilos
-    classDef source fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef compiler fill:#fff4dd,stroke:#d4a017,stroke-width:2px;
-    classDef byte fill:#e1f5fe,stroke:#01579b,stroke-width:2px;
-    classDef jvm fill:#c8e6c9,stroke:#2e7d32,stroke-width:4px;
-
-    %% Flujo Principal
-    A["**Código Fuente** (.java)<br/><i>'El Manuscrito'</i><br/>Es lo que tú escribes."] 
-    --> B{"**Compilador** (javac)<br/><i>'El Traductor Estricto'</i>"}
-
-    B -- "Si la sintaxis es correcta" --> C["**Bytecode** (.class)<br/><i>'Idioma Universal'</i><br/>Instrucciones optimizadas."]
-    B -- "Si hay errores" --> E((X))
-
-    C --> D["**JVM** (Java Virtual Machine)<br/><i>'El Motor e Intérprete'</i>"]
-
-    D --> F[<b>SO: Windows</b>]
-    D --> G[<b>SO: Linux</b>]
-    D --> H[<b>SO: macOS</b>]
-
-    %% Aplicación de Estilos
-    class A source;
-    class B compiler;
-    class C byte;
-    class D jvm;
-```
 
 ## 4. Gestión de Memoria: Stack vs. Heap
-Para entender la memoria, primero debemos saber que Java separa los Planos (Clases) de los Objetos Reales.
+Entender la memoria es la diferencia entre un programa eficiente y uno que colapsa un servidor bancario
 
-### Tabla comparativa de Memoria
-| Característica | **Stack** (La Pila) | **Heap** (El Monton) |
-|----------------|---------------------|----------------------|
-| **¿Qué guarda?** | Variables locales y llamadas a métodos. | **Objetos** y variables de instancia. |
-| **Orden** | LIFO (Last In First Out). Muy Organizado. | Desordenado. Los objetos se guardan donde haya espacio. |
-| **Ciclo de Vida** | Vive solo mientras el método se ejecuta. | Vive mientras el objeto sea necesario |
-| **Velocidad** | Extremadamente rápido | Más lento (requiere gestión del Garbage Collector) |
+- **Stack (Pila)**: Tareas Rápidas
+  - **Función**: Memoria de acceso ultra rápido y corto plazo.
 
-### JVM MEMORIA
-```mermaid
-graph LR
-    subgraph JVM_Memory [Memoria de la JVM]
-        direction TB
-        Stack["<b>Stack Memory</b><br/>(Variables de control y referencias)"]
-        Heap["<b>Heap Memory</b><br/>(Los Objetos Reales)"]
-    end
+  - **Qué guarda**: Variables locales (primitivos como int, double) y las referencias (direcciones) a los objetos.
 
-    UserCode[Código: Person p = new Person] --> Ref[Variable 'p' en el Stack]
-    Ref -- "Apunta a -->" --> Obj[Objeto 'Person' en el Heap]
+  - **Orden**: LIFO (Last In, First Out). Cuando un método termina, su Stack se limpia instantáneamente
 
-    style Stack fill:#fff3e0,stroke:#ff9800
-    style Heap fill:#e8f5e9,stroke:#4caf50
-    style JVM_Memory fill:#f5f5f5,stroke:#333
-```
+- **Heap (Monton)**: El Gran almacén
+  - **Función**: Memoria de largo plazo y gran capacidad.
 
-### 4.1 Stack (Pila): Tareas Rápidas
-Imagina una pila de platos. EL último que pones es el primero que quitas (**LIFO**).
+  - **Qué guarda**: Los Objetos Reales (instancias de clases).
 
-- **¿Qué guarda?** Variables locales (las que viven dentro de un método) y las "direcciones" (referencias) de los objetos.
+  - **Gestión**: Aquí vive el Garbage Collector (GC), que limpia automáticamente los objetos que ya no tienen una referencia en el Stack.
 
-- **Velocidad**: Es extremadamente veloz.
-
-- **Ciclo de vida**: Tan pronto el método termina, la memoria se limpia automáticamente. Es memoria de "corto plazo".
-
-### 4.2 Heap - Monton: El Gran almacén
-Imagina un almacen gigante y un poco desordenado donde guardas los productos terminados.
-
-- **¿Qué guarda?** Los **Objetos Reales** (los productos que creaste con tus moldes).
-
-- **Ciclo de vida**: Vive mientras alguien lo esté usando. Es memoria de "largo plazo".
-
-### 4.3 ¿Cómo interactúan?
+### 4.2 ¿Cómo interactúan?
 Este es el concepto clave:
 
 1. **La referencia (En el Stack)**: Cuando escribes `Person person1`, estas creando un pequeño espacio en el **Stack** llamado `person1`. Es la "etiqueta" o el control remoto. Es como tener la dirección de un casa anotada en un papel.
@@ -139,20 +87,6 @@ Este es el concepto clave:
 
 3. **El Vínculo**: El control remoto en tu mano (Stack) apunta al televisor que está en la sala (Heap). ¡Si pierdes el control remoto, el televisor sigue ahí, pero ya no puedes usarlo!
 
-```mermaid
-graph LR
-    subgraph JVM_Memory [Memoria de la JVM]
-        direction TB
-        Stack["<b>Stack Memory</b><br/>(Primitivos y Referencias)"]
-        Heap["<b>Heap Memory</b><br/>(Los Objetos Reales)"]
-    end
-
-    UserCode[Person p = new Person] --> Ref[Variable 'p' en el Stack]
-    Ref -- "Apunta a -->" --> Obj[Objeto 'Person' en el Heap]
-
-    style Stack fill:#fff3e0,stroke:#ff9800
-    style Heap fill:#e8f5e9,stroke:#4caf50
-```
 
 ## 5. El recolector de basura (Garbage Collector)
 Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Collector (GC)**, un proceso que vive en el **Heap**.
@@ -161,51 +95,190 @@ Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Col
 
 - **¿Por qué es importante?** En lenguajes antiguos como C++, tú tenías que limpiar la memoria manualmente. Si se te olvidaba, tu programa "explotaba". En Java, el Garbage Collector pasa la escoba por ti.
 
+## 6. Tipos de Datos y la Regla de Oro Financiera
+Java divide los datos según cómo se guardan en memoria:
 
-## 6. Programación Orientada a Objetos (POO): Moldes y Productos
+### 6.1 Tipos Primitivos (Viven en el Stack)
+Son valores puros, no son objetos y son extremadamente rápidos.
 
-Para que Java funcione, debemos dejar de pensar en líneas de código y empezar a pensar en arquitectura.
-### 6.1 El concepto de Clase (`Class`) - El Molde
+- `int`: Enteros de 32 bits (IDs, contadores).
+- `long`: Enteros de 64 bits (IDs grandes, timestamps).
+- `boolean`: Valores lógicos (`true/false`).
 
-Es la unidad básica. Java es Verboso y Abstracto, por lo que todo debe estar dentro de un molde. La clase define:
+  > **⚠️ ALERTA FINTECH**: Nunca uses `double` o `float` para saldos de dinero. Debido a cómo los procesadores manejan la coma flotante, pueden ocurrir errores de redondeo como `0.1 + 0.2 = 0.30000000000000004`. En su lugar, usamos la clase `BigDecimal`.
 
-Atributos: Los datos (ej. `double saldo`).
+### 6.2 Tipos de Referencia (Viven en el Heap)
+Son objetos complejos. El más común es `String`. Pueden ser `null`, lo que significa que la referencia en el Stack no apunta a ningún objeto en el Heap.
 
-Comportamientos: Los métodos o acciones (ej. `void retirar()`).
+## 7. Arrays: La Primera Estructura de Datos
+Antes de usar contenedores avanzados, debemos entender el Array.
 
-### 6.2 El concepto de Objeto - La Instancia
-Es el producto real que ocupa espacio en la memoria (Heap). Es cuando el molde se vuelve "real" y contiene datos específicos (ej. "La cuenta de Juan con $500").
+**Definición**: Un Array es una colección de elementos del mismo tipo con un **tamaño fijo** definido al momento de su creación.
 
+- **¿Por qué existen?** Para agrupar datos relacionados (ej. las últimas 10 transacciones) de forma contigua en memoria, lo que los hace muy rápidos para lectura.
 
-## 7. Tipos de Datos: Los "Ladrillos" de Java
-Como ya entendemos que el Stack es para cosas rápidas y el Heap es para objetos complejos, ahora debemos conocer con qué materiales vamos a construir. En Java existen dos grandes familias:
+- **Limitación**: Si creas un array de 5 espacios, no puedes añadir un sexto. Para eso necesitamos el *Collections Framework*.
 
-### 7.1 Tipos Primitivos (Viven 100% en el Stack)
-Son los tipos de datos más básicos. No son objetos, no tienen métodos, solo son valores puros. Son extremadamente rápidos. Java tiene 8, pero en Fintech usaremos principalmente estos 4:
-
-| Tipo | Tamaño | ¿Para qué se usa en un Banco? | Ejemplo |
-|------|--------|-------------------------------|---------|
-| `int` | 32 bits | Números enteros (IDs de usuario, contadores).| `int userId = 1024` |
-| `double` | 64 bits | Números con decimales (Tasas de interés, porcentajes). | `double interestRate = 5.5` |
-| `boolean` | 1 bit | Estados binarios (¿Está activa la cuenta? ¿Es fraude?). | `boolean isAccountActive = true`  |
-| `long` | 64 bits | Números enteros muy grandes (Saldos en centavos, timestamps). | `long transactionId = 9876543210L` |
-
-### 7.2 Tipos de Referencia (Viven en el Heap)
-Son objetos. El más famoso es el String (cadenas de texto). A diferencia de los primitivos, estos pueden ser `null`(estar vacíos) y tienen métodos (acciones).
-
-- Ejemplo: `String customerName = "Joshua Arnao"`;
-
-- Aquí, `customerNam` es la referencia en el Stack y `"Joshua Arnao"` es el objeto en el Heap.
-
-## 8. Punto de partida: public static void main
+## 8. El Punto de Entrada: `public static void main`
 Todo progrma en Java necesita un lugar por donde empezar. Sin esta línea, la JVM no sabe que "hilo" jalar para inciar el proceso.
 ```java
 public static void main(String[] args) {
-    // Aquí empieza la magia
+    // Código inicial aquí
 }
 ```
 
-### ¿Qué significa cada palabra
+- `public`: Acceso total para que la JVM pueda ejecutarlo.
+
+- `static`: El método le pertenece a la clase. La JVM no necesita crear un objeto para empezar a correr el programa.
+
+- `void`: No devuelve ningún valor tras finalizar.
+
+- `String[] args`: Un Array de textos que permite pasar configuración al programa desde la consola
+
+## 9. Anatomía de una Clase y Modificadores
+Antes de crear lógica bancaria, debemos entender cómo se estructura un método y quién tiene permiso de entrar a él. Un método es una acción que el objeto puede realizar.
+
+### Estructura de un método:
+`[Modificador de Acceso] [Modificador de Estado] [Tipo de Retorno] [Nombre]([Parámetros])`
+
+- **Tipo de Retorno**: Puede ser un primitivo (`int`), un objeto (`String`,` Account`) o `void` si no devuelve nada.
+
+- **Parámetros**: La información que el método necesita para trabajar (ej. `double price`).
+
+### Los 4 Modificadores de Acceso
+En banca, el acceso a los datos es crítico. Java usa estos niveles para decidir quién ve qué:
+
+| Modificador | Clase | Paquete | Subclase (Heredero) | Mundo (Externo) | Uso en Banca |
+|-------------|-------|--------|-------------|--------------|------------|
+| `public` | Sí | Sí | Sí | Sí | Para servicios que cualquiera puede usar (ej. `consultarTipoDeCambio`) |
+| `protected` | Sí | Sí | Sí | No | **Vital para JPA**. Permite que clases hijas usen el dato, pero nadie más de fuera. |
+| `default` (No se escribe) | Sí | Sí | No | No | Llamado *Package-Private*. Solo los que están en la misma "oficina" (paquete) lo ven. |
+| `private` | Sí | No | No | No | **Regla de oro**. Los saldos y claves siempre deben ser privados. |
+
+
+## 10. Los 4 Pilares de la POO (Programación Orientada a Objetos)
+Si la Clase es el molde y el Objeto es el producto, estos pilares son las reglas de ingeniería para que tu software sea profesional y seguro.
+
+1. **Encapsulamiento**: Proteger los datos sensibles. Los atributos se marcan como `private` y se accede a ellos mediante métodos `public` (Getters/Setters) que validan la información.
+
+2. **Abstracción**: Simplificar la realidad. Definimos qué hace un sistema (ej. `procesarPago()`) sin obligar al usuario a entender la complejidad interna.
+
+3. **Herencia**: Reutilizar lógica. Una `CuentaAhorro` hereda las propiedades de una `CuentaBancaria`.
+
+4. **Polimorfismo**: Un mismo comando, distintos comportamientos. El método `calcularComision()` actuará diferente si el objeto es una "Cuenta VIP" o una "Cuenta Estándar".
+
+### 11. Interfaces vs. Clases Abstractas: El Contrato Bancario
+En el nivel experto, no solo heredas código, sino que firmas **contratos de comportamiento**.
+
+### 11.1 La Clase Abstracta (abstract class)
+Es un "híbrido". Es un molde que no puede ser un producto final (no puedes hacer new de ella), pero tiene partes ya construidas.
+
+Cuándo usarla: Cuando tienes una base común. Ejemplo: Una CuentaBancaria genérica tiene la lógica de "ver saldo", pero el "cobrar comisión" es diferente para cada una.
+
+En JPA: Se usan para crear "Entidades Base" que tienen campos comunes como id o fecha_creacion.
+
+### 11.2 La Interfaz (interface)
+Es un contrato puro. No dice cómo se hacen las cosas, solo qué cosas se deben poder hacer.
+
+En Fintech: Son fundamentales. Definimos una interfaz IPaymentProcessor. Luego, podemos tener una implementación para Visa y otra para Stripe. El sistema principal no sabe cuál usa, solo sabe que ambas cumplen el contrato.
+
+En JPA/Spring: Los Repositories son interfaces. Tú solo defines el "Qué" (ej. buscarPorDni) y Spring se encarga del "Cómo".
+
+| Característica | Clase Abstracta | Interfaz |
+|----------------|-----------------|----------|
+| **Herencia** | Una clase solo puede heredar de UNA. | Una clase puede implementar MUCHAS interfaces. |
+| **Atributos** | Puede tener variables normales (estado). | Solo constantes (public static final). |
+| **Métodos** | Puede tener métodos con código y sin código. | Principalmente métodos sin código (hasta Java 8). |
+
+## 12. Java Collections Frameworks
+Cuando los Arrays se quedan cortos por su tamaño fijo, usamos Colecciones: contenedores dinámicos que crecen según la necesidad.
+
+- `List` (**ArrayList**): Como un Array, pero dinámico. Permite duplicados y mantiene el orden de inserción.
+
+- `Set` (**HashSet**): No permite duplicados. Ideal para listas de IDs únicos.
+
+- `Map` (**HashMap**): Almacena pares Llave : Valor (ej. "DNI" : "Nombre de Usuario"). Es el buscador más rápido del lenguaje.
+
+## 13. Anotaciones (@Metadata): Etiquetas Inteligentes
+Las anotaciones son etiquetas que pegamos en el código para darle instrucciones al compilador o a un Framework (como JPA o Spring). No cambian la lógica del código, pero le dicen a Java: "Oye, este objeto tiene un tratamiento especial".
+
+¿Por qué existen?
+Antiguamente, para configurar un sistema bancario, tenías archivos XML gigantes de miles de líneas. Las anotaciones permiten configurar el sistema dentro del mismo código.
+
+Las que verás en JPA:
+1. @Entity: Le dice a Java: "Esta clase no es solo un molde, es una tabla en la base de datos".
+
+2. @Table(name = "usuarios"): Especifica el nombre exacto de la tabla.
+
+3. @Id: Indica que esa variable es la "Llave Primaria" (el identificador único en el banco).
+
+4. @Column: Define reglas para esa columna (ej. nullable = false para que el campo no sea nulo).
+
+    **Analogía**: Imagina que envías una caja por correo. El contenido es el código, pero las etiquetas de "FRÁGIL" o "ESTE LADO HACIA ARRIBA" son las anotaciones. No son el contenido, pero le dicen al transportista (JPA/Hibernate) cómo manejar la caja.
+
+
+
+## 14. Generics: El "Contenedor Etiquetado"
+Antes de que existieran los Genéricos (en versiones antiguas de Java), las colecciones eran como **bolsas negras de basura**. Podías meter cualquier cosa dentro (un número, un texto, un objeto). El problema era al sacar las cosas: no sabías qué eran y tenías que "adivinar" (hacer un Casting), lo que causaba que el programa explotara en plena ejecución.
+
+### La Analogía: La Caja de Seguridad vs. La Bolsa de Misterio
+- **Sin Genéricos (Bolsa de Misterio)**: Metes un fajo de billetes. Al sacarlo, Java te dice: "Aquí tienes un Objeto". Tú tienes que rezar y decir: "Confío en que esto sea un Billete". Si te equivocas, el sistema colapsa.
+
+- **Con Genéricos (Caja Etiquetada)**: Creas una caja que dice `Caja<Billete>`. Java no te permitirá meter una moneda ni un contrato ahí dentro. Y al sacarlo, Java ya sabe que es un Billete. Seguridad total.
+
+### ¿Por qué son tan potentes?
+| Beneficio | Explicación |
+|-----------|-------------|
+| Seguridad en Compilación | El "Traductor Estricto" (`javac`) detecta el error antes de que el programa corra. |
+| Adiós al Casting | No tienes que escribir (`Account`) myAccount cada vez que sacas algo de una lista. |
+| Reutilización de Código | Puedes escribir una lógica (ej. un procesador de envíos) que funcione para cualquier tipo de dato. |
+
+### Anatomía de un Genérico
+Verás letras como `<T>`, `<E>` o `<K, V>`. No es código secreto, son "Placeholders" (espacios reservados).
+
+- `<T>`: Significa Type (Tipo). Se usa cuando una clase puede manejar cualquier tipo.
+- `<E>`: Significa Element (Elemento). Muy usado en listas.
+- `<K, V>`: Key (Llave) y Value (Valor). Se usa en los Mapas.
+
+## 14. ¿Qué es una Excepción?
+En Java, una **Excepción** es un evento inesperado que ocurre durante la ejecución de un programa y que interrumpe el flujo normal de las instrucciones.
+
+### La Anatomía del Try-Catch-Finally
+Java nos da una estructura para "atrapar" estos errores antes de que maten al programa.
+
+```java
+try {
+    // 1. EL INTENTO: Aquí pones el código "peligroso"
+    // (Ejemplo: Conectar al banco o dividir por cero)
+    int result = 100 / 0; 
+} 
+catch (ArithmeticException e) {
+    // 2. EL PLAN DE EMERGENCIA: Se ejecuta solo si algo falló en el 'try'
+    System.out.println("Error: No puedes dividir por cero, genio.");
+} 
+finally {
+    // 3. EL CIERRE: Se ejecuta SIEMPRE, haya error o no.
+    // (Ideal para cerrar conexiones a bases de datos)
+    System.out.println("Limpiando recursos...");
+}
+```
+
+### La Jerarquía: No todos los errores son iguales
+Para ser un profesional, debes saber que Java organiza los errores en una familia:
+
+- `Error`: Son fallos catastróficos de la **JVM** (ej. se acabó la memoria RAM del servidor). **No puedes atraparlos**; si esto pasa, el programa muere.
+- `Exception`: **Estos son los que tú debes manejar**. Se dividen en dos:
+
+#### Tabla: Checked vs. Unchecked Exceptions
+
+| Tipo | Nombre | ¿Cuándo ocurre? | ¿Es obligatorio manejarla? | Ejemplo |
+|------|--------|-----------------|----------------------------|---------|
+| **Checked** | Verificadas | Errores externos (Bases de datos, Archivos). | **SÍ**. El compilador no te deja avanzar si no pones un `try-catch`. | `SQLException, IOException` |
+| **Unchecked** | No verificadas | Errores de lógica del programador. | **NO**. Pero deberías evitarlas con buena lógica. | `NullPointerException, ArithmeticException` |
+
+### Propagación de Errores: El `throws`
+A veces, un método no quiere hacerse cargo del error y prefiere "pasarle la bola" al que lo llamó. Esto se hace con la palabra clave `throws`.
+
 
 
 
