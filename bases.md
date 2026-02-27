@@ -170,24 +170,22 @@ Si la Clase es el molde y el Objeto es el producto, estos pilares son las reglas
 ### 11. Interfaces vs. Clases Abstractas: El Contrato Bancario
 En el nivel experto, no solo heredas código, sino que firmas **contratos de comportamiento**.
 
-### 11.1 La Clase Abstracta (abstract class)
-Es un "híbrido". Es un molde que no puede ser un producto final (no puedes hacer new de ella), pero tiene partes ya construidas.
+### 11.1 La Clase Abstracta (`abstract class`)
+Es un "híbrido". Es un molde que no puede ser un producto final (no puedes hacer `new` de ella), pero tiene partes ya construidas.
 
-Cuándo usarla: Cuando tienes una base común. Ejemplo: Una CuentaBancaria genérica tiene la lógica de "ver saldo", pero el "cobrar comisión" es diferente para cada una.
+- **Cuándo usarla**: Cuando tienes una base común. Ejemplo: Una `AccountBank` genérica tiene la lógica de "ver saldo", pero el "cobrar comisión" es diferente para cada una.
 
-En JPA: Se usan para crear "Entidades Base" que tienen campos comunes como id o fecha_creacion.
+- En JPA: Se usan para crear "Entidades Base" que tienen campos comunes como `id` o `fecha_creacion`.
 
-### 11.2 La Interfaz (interface)
+### 11.2 La Interfaz (`interface`)
 Es un contrato puro. No dice cómo se hacen las cosas, solo qué cosas se deben poder hacer.
 
-En Fintech: Son fundamentales. Definimos una interfaz IPaymentProcessor. Luego, podemos tener una implementación para Visa y otra para Stripe. El sistema principal no sabe cuál usa, solo sabe que ambas cumplen el contrato.
-
-En JPA/Spring: Los Repositories son interfaces. Tú solo defines el "Qué" (ej. buscarPorDni) y Spring se encarga del "Cómo".
+En Fintech: Son fundamentales. Definimos una interfaz `PaymentProcessor`. Luego, podemos tener una implementación para `Visa` y otra para `Stripe`. El sistema principal no sabe cuál usa, solo sabe que ambas cumplen el contrato.
 
 | Característica | Clase Abstracta | Interfaz |
 |----------------|-----------------|----------|
 | **Herencia** | Una clase solo puede heredar de UNA. | Una clase puede implementar MUCHAS interfaces. |
-| **Atributos** | Puede tener variables normales (estado). | Solo constantes (public static final). |
+| **Atributos** | Puede tener variables normales (estado). | Solo constantes (`public static final`). |
 | **Métodos** | Puede tener métodos con código y sin código. | Principalmente métodos sin código (hasta Java 8). |
 
 ## 12. Java Collections Frameworks
@@ -206,17 +204,15 @@ Las anotaciones son etiquetas que pegamos en el código para darle instrucciones
 Antiguamente, para configurar un sistema bancario, tenías archivos XML gigantes de miles de líneas. Las anotaciones permiten configurar el sistema dentro del mismo código.
 
 Las que verás en JPA:
-1. @Entity: Le dice a Java: "Esta clase no es solo un molde, es una tabla en la base de datos".
+1. `@Entity`: Le dice a Java: "Esta clase no es solo un molde, es una tabla en la base de datos".
 
-2. @Table(name = "usuarios"): Especifica el nombre exacto de la tabla.
+2. `@Table(name = "usuarios")`: Especifica el nombre exacto de la tabla.
 
-3. @Id: Indica que esa variable es la "Llave Primaria" (el identificador único en el banco).
+3. `@Id`: Indica que esa variable es la "Llave Primaria" (el identificador único en el banco).
 
-4. @Column: Define reglas para esa columna (ej. nullable = false para que el campo no sea nulo).
+4. `@Column`: Define reglas para esa columna (ej. `nullable = false` para que el campo no sea nulo).
 
     **Analogía**: Imagina que envías una caja por correo. El contenido es el código, pero las etiquetas de "FRÁGIL" o "ESTE LADO HACIA ARRIBA" son las anotaciones. No son el contenido, pero le dicen al transportista (JPA/Hibernate) cómo manejar la caja.
-
-
 
 ## 14. Generics: El "Contenedor Etiquetado"
 Antes de que existieran los Genéricos (en versiones antiguas de Java), las colecciones eran como **bolsas negras de basura**. Podías meter cualquier cosa dentro (un número, un texto, un objeto). El problema era al sacar las cosas: no sabías qué eran y tenías que "adivinar" (hacer un Casting), lo que causaba que el programa explotara en plena ejecución.
@@ -390,7 +386,7 @@ Obtener el atributo usuario que esta en la sesión:
 
 ## ¿Que es Java Persistence API?
 JPA es un ORM(Object Relational Mapping) que tien como objetivo lograr la persistencia de datos entre una aplicación desarrollada en JAva y una base de datos.
-JPA busca **traducir el modelo de las clases Java** a **un modeloado relacional en una base de datos**, posibilitando al pogramdor elegir quee clases u objetos quiere persistir.
+JPA busca **traducir el modelo de las clases Java** a **un modeloado relacional en una base de datos**, posibilitando al pogramador elegir quee clases u objetos quiere persistir.
 
 ### ¿Qué en un ORM?
 Es una herramienta que:
@@ -408,6 +404,30 @@ Es como un conjunto de reglas que dicen:
 Pero JPA no hace el trabajo directamente.
 
 ### Como funciona JPA
-JPA se vale de una serie de paeos que se deben realizar sobre cada uno de los elementos de una clase, los mims se reepresentan mendainte annotations (@).
+JPA se vale de una serie de paeos que se deben realizar sobre cada uno de los elementos de una clase, los mims se reepresentan mendainte **annotations** (`@`).
 
 JPA cuenta con proveedores de JPA, entre ellos: Eclipselink, Hibernate, Toplink entre otros
+
+![alt text](image.png)
+
+### Annotations más usadas
+- `@Entity`: Especifica la creación de una entidad. Se coloca al incio de la definciión de una clase.
+
+- `@Id`: Primary key de la entidad
+    - `GeneratedValue(strategy=GenerationType.SEQUENCE)`: Establece que la ID se va a generar de forma automática y secuencial.
+
+- `@Basic`: Para hacer referencia a atributos comunes.
+
+- `@Temporal`: Se usa normalmente en fechas.
+    - Si se quiere tener en cuenta la hora se utiliza: `@Temporal(TemporalType.TIMESTAMP)`
+    - Si solo se tiene en cuenta la fecha (DATE): `@Temporal(TemporalType.DATE)`
+
+- `@OneToMany`: Indicar una relación unidireccional de 1 a n.
+
+- `@OneToOne`: Indicar una relación de 1 a 1.
+
+- `@ManyToMany`: Indicar una relación de n a n.
+
+luego del mapeo de entidades se debe de reflejar el mapeo en la unidad de persistencia
+
+### JPA Controllers
