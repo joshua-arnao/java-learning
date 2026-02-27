@@ -1,6 +1,8 @@
 # JAVA - ☕
 
-## 1. ¿Qué es Java realmente?
+## Módulo I: EL entorno de Ejecución
+
+### 1. ¿Qué es Java realmente?
 
 Java es un lenguaje de **alto nivel** y una **plataforma de ejecución**. Es el estándar en la industria bancaria y Fintech debido a su **robustez** y **seguridad** No solo escribes código, construyes sistemas que corren en un entorno controlado.
 
@@ -17,7 +19,7 @@ Sus pilares fundamentales:
 
 - **Independiente del Hardware**: Gracias a su lema: *"Write once, run anywhere"* (Escríbelo una vez, ejecútalo en cualquier lugar). El código que haces en tu laptop funcionará exactamente igual en el servidor gigante del banco.
 
-## 2. El Ecosistema: ¿Qué instalar?
+### 2. El Ecosistema: ¿Qué instalar?
 Para trabajar en Java, debes conocer la diferencia entre estas herramientas:
 
 | Siglas | Nombre | ¿Para qué sirve? |
@@ -49,7 +51,7 @@ graph TD
     style JVM fill:#c8e6c9,stroke:#2e7d32,stroke-width:2px
 ```
 
-## 3. Flujo de Ejecución y Seguridad - Sandbox
+### 3. Flujo de Ejecución y Seguridad - Sandbox
 Java no corre directamente sobre el hardware. Se ejecuta dentro de una **JVM**, lo que crea un entorno seguro o **Sandbox**, protegiendo al sistema operativo de código malicioso o errores graves.
 
 
@@ -60,7 +62,8 @@ Java no corre directamente sobre el hardware. Se ejecuta dentro de una **JVM**, 
 | **Interpretación** | **JVM** | Ejecución | El motor traduce el Bytecode a lenguaje máquina en tiempo real. |
 
 
-## 4. Gestión de Memoria: Stack vs. Heap
+## Módulo II - Gestión de Memoria y Datos
+### 4. Gestión de Memoria: Stack vs. Heap
 Entender la memoria es la diferencia entre un programa eficiente y uno que colapsa un servidor bancario
 
 - **Stack (Pila)**: Tareas Rápidas
@@ -77,7 +80,7 @@ Entender la memoria es la diferencia entre un programa eficiente y uno que colap
 
   - **Gestión**: Aquí vive el Garbage Collector (GC), que limpia automáticamente los objetos que ya no tienen una referencia en el Stack.
 
-### 4.2 ¿Cómo interactúan?
+#### 4.1 ¿Cómo interactúan?
 Este es el concepto clave:
 
 1. **La referencia (En el Stack)**: Cuando escribes `Person person1`, estas creando un pequeño espacio en el **Stack** llamado `person1`. Es la "etiqueta" o el control remoto. Es como tener la dirección de un casa anotada en un papel.
@@ -87,28 +90,30 @@ Este es el concepto clave:
 
 3. **El Vínculo**: El control remoto en tu mano (Stack) apunta al televisor que está en la sala (Heap). ¡Si pierdes el control remoto, el televisor sigue ahí, pero ya no puedes usarlo!
 
-
-## 5. El recolector de basura (Garbage Collector)
-Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Collector (GC)**, un proceso que vive en el **Heap**.
-
-- **¿Qué hace?** Escanea el Heap buscando objetos que ya nadie usa (objetos a los que el Stack ya no apunta, es decir, objetos que perdieron su "control remoto").
-
-- **¿Por qué es importante?** En lenguajes antiguos como C++, tú tenías que limpiar la memoria manualmente. Si se te olvidaba, tu programa "explotaba". En Java, el Garbage Collector pasa la escoba por ti.
-
-## 6. Tipos de Datos y la Regla de Oro Financiera
+### 5. Tipos de Datos y la Regla de Oro Financiera
 Java divide los datos según cómo se guardan en memoria:
 
-### 6.1 Tipos Primitivos (Viven en el Stack)
+#### 5.1 Tipos Primitivos (Viven en el Stack)
 Son valores puros, no son objetos y son extremadamente rápidos.
 
 - `int`: Enteros de 32 bits (IDs, contadores).
 - `long`: Enteros de 64 bits (IDs grandes, timestamps).
 - `boolean`: Valores lógicos (`true/false`).
 
-  > **⚠️ ALERTA FINTECH**: Nunca uses `double` o `float` para saldos de dinero. Debido a cómo los procesadores manejan la coma flotante, pueden ocurrir errores de redondeo como `0.1 + 0.2 = 0.30000000000000004`. En su lugar, usamos la clase `BigDecimal`.
-
-### 6.2 Tipos de Referencia (Viven en el Heap)
+#### 5.2 Tipos de Referencia (Viven en el Heap)
 Son objetos complejos. El más común es `String`. Pueden ser `null`, lo que significa que la referencia en el Stack no apunta a ningún objeto en el Heap.
+
+##### 5.3 
+
+
+## 6. El recolector de basura (Garbage Collector)
+Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Collector (GC)**, un proceso que vive en el **Heap**.
+
+- **¿Qué hace?** Escanea el Heap buscando objetos que ya nadie usa (objetos a los que el Stack ya no apunta, es decir, objetos que perdieron su "control remoto").
+
+- **¿Por qué es importante?** En lenguajes antiguos como C++, tú tenías que limpiar la memoria manualmente. Si se te olvidaba, tu programa "explotaba". En Java, el Garbage Collector pasa la escoba por ti.
+
+
 
 ## 7. Arrays: La Primera Estructura de Datos
 Antes de usar contenedores avanzados, debemos entender el Array.
@@ -214,29 +219,21 @@ Las que verás en JPA:
 
     **Analogía**: Imagina que envías una caja por correo. El contenido es el código, pero las etiquetas de "FRÁGIL" o "ESTE LADO HACIA ARRIBA" son las anotaciones. No son el contenido, pero le dicen al transportista (JPA/Hibernate) cómo manejar la caja.
 
-## 14. Generics: El "Contenedor Etiquetado"
-Antes de que existieran los Genéricos (en versiones antiguas de Java), las colecciones eran como **bolsas negras de basura**. Podías meter cualquier cosa dentro (un número, un texto, un objeto). El problema era al sacar las cosas: no sabías qué eran y tenías que "adivinar" (hacer un Casting), lo que causaba que el programa explotara en plena ejecución.
+### 14. Generics: El "Contenedor Etiquetado"
+Los Genéricos permiten que las clases, interfaces y métodos operen sobre tipos de datos específicos sin perder la seguridad del tipado fuerte.
 
-### La Analogía: La Caja de Seguridad vs. La Bolsa de Misterio
-- **Sin Genéricos (Bolsa de Misterio)**: Metes un fajo de billetes. Al sacarlo, Java te dice: "Aquí tienes un Objeto". Tú tienes que rezar y decir: "Confío en que esto sea un Billete". Si te equivocas, el sistema colapsa.
+- El Problema (**Pre-Java 5**): Se usaba la clase `Object`. Esto obligaba a realizar un Casting manual al recuperar datos. Si el programador se equivocaba de tipo, el sistema lanzaba una `ClassCastException` en producción (tiempo de ejecución).
 
-- **Con Genéricos (Caja Etiquetada)**: Creas una caja que dice `Caja<Billete>`. Java no te permitirá meter una moneda ni un contrato ahí dentro. Y al sacarlo, Java ya sabe que es un Billete. Seguridad total.
+- La Solución: Los Genéricos trasladan el error al tiempo de compilación. Si intentas meter un `Loan` en una lista de `CreditCard`, el código ni siquiera compilará.
 
-### ¿Por qué son tan potentes?
-| Beneficio | Explicación |
-|-----------|-------------|
-| Seguridad en Compilación | El "Traductor Estricto" (`javac`) detecta el error antes de que el programa corra. |
-| Adiós al Casting | No tienes que escribir (`Account`) myAccount cada vez que sacas algo de una lista. |
-| Reutilización de Código | Puedes escribir una lógica (ej. un procesador de envíos) que funcione para cualquier tipo de dato. |
-
-### Anatomía de un Genérico
+#### Anatomía de un Genérico
 Verás letras como `<T>`, `<E>` o `<K, V>`. No es código secreto, son "Placeholders" (espacios reservados).
 
 - `<T>`: Significa Type (Tipo). Se usa cuando una clase puede manejar cualquier tipo.
 - `<E>`: Significa Element (Elemento). Muy usado en listas.
 - `<K, V>`: Key (Llave) y Value (Valor). Se usa en los Mapas.
 
-## 14. ¿Qué es una Excepción?
+### 15. ¿Qué es una Excepción?
 En Java, una **Excepción** es un evento inesperado que ocurre durante la ejecución de un programa y que interrumpe el flujo normal de las instrucciones.
 
 ### La Anatomía del Try-Catch-Finally
@@ -276,8 +273,70 @@ Para ser un profesional, debes saber que Java organiza los errores en una famili
 A veces, un método no quiere hacerse cargo del error y prefiere "pasarle la bola" al que lo llamó. Esto se hace con la palabra clave `throws`.
 
 
+## 15. Gestor de Dependencias - Apache Maven
+En un entorno profesional y bancario, no construimos todo desde cero. Usamos librerías externas (JARs). Antiguamente, los programadores descargaban estas librerías manualmente, lo que causaba versiones incompatibles y errores difíciles de rastrear (el famoso "JAR Hell").
+
+**Maven** es una herramienta de gestión y automatización de proyectos Java. Se basa en el concepto de **POM (Project Object Model)**.
+
+### 15.1 ¿Qué problemas resuelve?
+
+1. **Gestión de Dependencias**: Si necesitas JPA, Maven lo descarga por ti, junto con todas las otras librerías que JPA necesita para funcionar (dependencias transitivas).
+
+2. **Estandarización**: Todos los proyectos Maven tienen la misma estructura de carpetas. Si cambias de banco o de equipo, sabrás dónde está cada cosa.
+
+3. **Ciclo de Vida**: Automatiza tareas como compilar, probar y empaquetar el código para producción.
+
+### 15.2 El archivo pom.xml: El ADN del proyecto
+Todo proyecto Maven tiene un archivo en la raíz llamado pom.xml. Es un archivo declarativo donde le dices a Maven qué necesita tu proyecto.
+
+#### Estructura básica de una dependencia en el POM:
+```xml
+<dependency>
+    <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId>
+    <version>6.4.0.Final</version>
+</dependency>
+```
+
+### 15.3 El Ciclo de Vida (Lifecycles)
+Maven tiene fases predefinidas que se ejecutan en orden. Si ejecutas una fase, todas las anteriores se ejecutan automáticamente.
+
+| Fase | ¿Qué hace? |
+|------|------------|
+| `clean` | Borra la carpeta `target` (limpia archivos de compilaciones viejas). |
+| `compile` | Transforma tus `.java` en `.class`(Bytecode). |
+| `clean` | Ejecuta las pruebas unitarias para asegurar que el código bancario no tenga fallos. |
+| `clean` | Empaqueta el código compilado en un archivo JAR (Java Archive). |
+| `clean` | Guarda el JAR en tu repositorio local para que otros proyectos tuyos lo usen. |
+| `clean` | Sube el JAR al servidor del banco para que el sistema empiece a funcionar. |
 
 
+### 15.4 Los Repositorios: ¿De dónde baja las cosas?
+Maven no tiene las librerías dentro; las busca en "almacenes":
+
+1. Repositorio Local: Una carpeta en tu propia computadora (.m2). La primera vez que pides algo, lo baja de internet y lo guarda aquí para no volver a descargarlo.
+
+2. Repositorio Central (Maven Central): Un servidor gigante en internet con millones de librerías gratuitas y seguras.
+
+3. Repositorio Remoto/Privado: En los bancos, por seguridad, no se permite bajar cosas de internet directamente. El banco tiene su propio "Maven Central" privado donde solo
+
+```mermaid
+graph LR
+    PC[Tu Proyecto] --> Local[Repositorio Local .m2]
+    Local -- "Si no existe" --> Central[Maven Central / Repo Banco]
+    Central -- "Descarga" --> Local
+    Local -- "Provee" --> PC
+```
+
+### 15.5 Estructura Estándar de Carpetas
+Para que un experto en Java sepa dónde mirar, Maven impone este orden:
+
+- `src/main/java`: Aquí va tu código fuente (`.java`).
+
+- `src/main/resources`: Archivos de configuración (ej. la conexión a la base de datos para JPA).
+
+- `src/test/java`: Aquí van tus pruebas para validar que el sistema no falle.
+
+- `target`: Carpeta donde Maven guarda el resultado final (el JAR compilado). Nunca se sube al control de versiones.
 
 ## L.1 ¿Qué es un **Servlet**??
 - Es una "Clase" especial de **Java** que se utiliza como punto intermedio entre una página **JSP** y el **servidor web** donde está alojada la lógica de una aplicación
