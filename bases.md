@@ -1,5 +1,34 @@
 # JAVA - ☕
+- **[Módulo I: Entorno de Ejecución](#módulo-i-entorno-de-ejecución)**
+    1. [¿Qué es Java?](#1-qué-es-java)
+    2. [Ecosistema (JDK, JRE, JVM)](#2-ecosistema-jdk-jre-jvm)
+    3. [Sandbox y Flujo de Ejecución](#3-sandbox-y-flujo-de-ejecución)
 
+- **[Módulo II: Gestión de Memoria y Datos](#módulo-ii-gestión-de-memoria-y-datos)**
+    4. [Memoria (Stack, Heap y Garbage Collector)](#4-memoria-stack-heap-y-garbage-collector)
+    5. [Tipos de Datos (Primitivos, Wrappers y BigDecimal)](#5-tipos-de-datos-primitivos-wrappers-y-bigdecimal)
+    6. [Inmutabilidad y String Pool](#6-inmutabilidad-y-string-pool)
+    7. [Java Records (DTOs Modernos)](#7-java-records-dtos-modernos)
+    8. [Java Time API](#8-java-time-api)
+    9. [Contrato de Identidad (Equals y HashCode)](#9-contrato-de-identidad-equals-y-hashcode)
+
+- **[Módulo III: POO Avanzada](#módulo-iii-poo-avanzada)**
+    10. [Anatomía de Métodos y Modificadores de Acceso](#10-anatomía-de-métodos-y-modificadores-de-acceso)
+    11. [Los 4 Pilares de la POO](#11-los-4-pilares-de-la-poo)
+    12. [Interfaces vs Clases Abstractas](#12-interfaces-vs-clases-abstractas)
+    13. [Enums con Comportamiento](#13-enums-con-comportamiento)
+
+- **[Módulo IV: Estructuras de Datos y Lógica](#módulo-iv-estructuras-de-datos-y-lógica)**
+    14. [Arrays (La Base)](#14-arrays-la-base)
+    15. [Generics (Seguridad de Tipado)](#15-generics-seguridad-de-tipado)
+    16. [Collections Framework (List, Set, Map)](#16-collections-framework-list-set-map)
+    17. [Optional (Adiós al Null)](#17-optional-adiós-al-null)
+    18. [Stream API (Procesamiento Fluido)](#18-stream-api-procesamiento-fluido)
+
+- **[Módulo V: Resiliencia y Herramientas](#módulo-v-resiliencia-y-herramientas)**
+    19. [Gestión de Excepciones (Checked vs Unchecked)](#19-gestión-de-excepciones-checked-vs-unchecked)
+    20. [Anotaciones (Metadata)](#20-anotaciones-metadata)
+    21. [Apache Maven (Gestión Industrial)](#21-apache-maven-gestión-industrial)
 ## Módulo I: EL entorno de Ejecución
 
 ### 1. ¿Qué es Java realmente?
@@ -90,23 +119,7 @@ Este es el concepto clave:
 
 3. **El Vínculo**: El control remoto en tu mano (Stack) apunta al televisor que está en la sala (Heap). ¡Si pierdes el control remoto, el televisor sigue ahí, pero ya no puedes usarlo!
 
-### 5. Tipos de Datos y la Regla de Oro Financiera
-Java divide los datos según cómo se guardan en memoria:
-
-#### 5.1 Tipos Primitivos (Viven en el Stack)
-Son valores puros, no son objetos y son extremadamente rápidos.
-
-- `int`: Enteros de 32 bits (IDs, contadores).
-- `long`: Enteros de 64 bits (IDs grandes, timestamps).
-- `boolean`: Valores lógicos (`true/false`).
-
-#### 5.2 Tipos de Referencia (Viven en el Heap)
-Son objetos complejos. El más común es `String`. Pueden ser `null`, lo que significa que la referencia en el Stack no apunta a ningún objeto en el Heap.
-
-##### 5.3 
-
-
-## 6. El recolector de basura (Garbage Collector)
+#### 4.2. El recolector de basura (Garbage Collector)
 Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Collector (GC)**, un proceso que vive en el **Heap**.
 
 - **¿Qué hace?** Escanea el Heap buscando objetos que ya nadie usa (objetos a los que el Stack ya no apunta, es decir, objetos que perdieron su "control remoto").
@@ -115,43 +128,127 @@ Java tiene gestión automática de memoria. Esto sucede gracias al **Garbage Col
 
 
 
-## 7. Arrays: La Primera Estructura de Datos
-Antes de usar contenedores avanzados, debemos entender el Array.
+### 5. Tipos de Datos y la Regla de Oro Financiera
+En Java, la elección del tipo de dato determina no solo qué valor guardas, sino **dónde** se guarda y **cómo** se comporta el sistema al procesarlo.
 
-**Definición**: Un Array es una colección de elementos del mismo tipo con un **tamaño fijo** definido al momento de su creación.
+#### 5.1 Tipos Primitivos (Viven en el Stack)
+Son los bloques de construcción básicos. No son objetos, son valores crudos.
 
-- **¿Por qué existen?** Para agrupar datos relacionados (ej. las últimas 10 transacciones) de forma contigua en memoria, lo que los hace muy rápidos para lectura.
+- **Eficiencia**: Al vivir en el **Stack**, su acceso es casi instantáneo.
+- **Limitación**: No pueden ser `null`. Siempre tienen un valor (0 para números, `false` para booleanos).
+- **Tipos clave**:
 
-- **Limitación**: Si creas un array de 5 espacios, no puedes añadir un sexto. Para eso necesitamos el *Collections Framework*.
+- `int`: Enteros de 32 bits (IDs, contadores).
+- `long`: Enteros de 64 bits (IDs grandes, timestamps).
+- `boolean`: Valores lógicos (`true/false`).
 
-## 8. El Punto de Entrada: `public static void main`
-Todo progrma en Java necesita un lugar por donde empezar. Sin esta línea, la JVM no sabe que "hilo" jalar para inciar el proceso.
+#### 5.2 Clases Wrapper (Objetos en el Heap)
+Para cada primitivo, Java ofrece una "clase envoltorio" (`Integer`, `Long`, `Boolean`, `Double`).
+
+- **Por qué existen**: Java es un lenguaje orientado a objetos. Muchas herramientas del lenguaje (como las Colecciones) **solo aceptan objetos**, no primitivos.
+
+- **Capacidad Null**: A diferencia de los primitivos, estos pueden ser `null`. Esto es vital para representar "ausencia de dato" en un sistema real.
+
+- **Costo**: Al ser objetos, viven en el **Heap** y requieren más memoria y tiempo de procesamiento (un proceso llamado *Autoboxing*).
+
+#### 5.3 La Precisión Decimal: El problema del `Double`
+En computación, los tipos `float` y `double` siguen el estándar IEEE 754 (base 2). Esto es excelente para ciencia o gráficos, pero desastroso para contabilidad.
+
+- El Error: No todos los números decimales se pueden representar de forma exacta en binario.
+    `0.1 + 0.2` en Java no es `0.3`, es `0.30000000000000004`.
+
+- **La Solución**: `BigDecimal`: Es una clase diseñada para cálculos de precisión arbitraria.
+
+    - **Precisión**: Tú controlas cuántos decimales quieres y cómo redondear.
+
+    - **Inmutabilidad**: Al igual que un `String`, un `BigDecimal` no cambia. Si sumas dos montos, obtienes un nuevo objeto con el resultado.
+
+    > Tip: "Nunca uses `new BigDecimal(double)`. Usa siempre `new BigDecimal(String)` o `BigDecimal.valueOf(double)` para evitar heredar la imprecisión del tipo double desde el inicio."
+
+### 6. La Inmutabilidad y el String Pool
+En un sistema transaccional, la inmutabilidad no es un lujo, es una estrategia de seguridad. Un objeto **inmutable** es aquel cuyo estado no puede cambiar después de ser creado.
+
+#### 6.1 ¿Por qué es vital en sistemas críticos?
+
+1. **Thread-Safety (Seguridad en hilos)**: Si un objeto no cambia, puede ser compartido por miles de hilos (pagos simultáneos) sin riesgo de que uno corrompa el dato del otro. No necesita "locks" o bloqueos complejos.
+
+2. **Consistencia**: Si pasas un objeto `Amount` a un método de validación, tienes la certeza de que el método no alterará el valor original por accidente.
+
+#### 6.2 El String Pool (La optimización del Heap)
+La clase `String` es el objeto más usado en Java. Para ahorrar memoria, Java no crea un objeto nuevo cada vez si el texto es el mismo; usa el **String Pool**.
+
+- **¿Qué es?** Una zona especial dentro del Heap donde se almacenan cadenas de texto únicas.
+
+- **¿Cómo funciona?** Cuando escribes `String account = "ES123"`, la JVM busca en el Pool. Si ya existe, te da la referencia existente.
+
+- La trampa del `new`: Si usas `String text = new String("ES123")`, obligas a Java a crear un objeto fuera del Pool, desperdiciando memoria.
+
+    > ⚠️ Lección de Arquitectura: El String Pool solo funciona porque los Strings son inmutables. Si pudieras cambiar un String, cambiarías el valor para todas las partes del programa que apuntan a esa referencia en el Pool, causando un desastre sistémico.
+
+### 7. Java Records (El estándar para DTOs)
+Para evitar escribir cientos de líneas de código repetitivo (Getters, Setters, Equals, HashCode), Java introdujo los **Records**.
+
 ```java
-public static void main(String[] args) {
-    // Código inicial aquí
-}
+public record Transaction(Long id, BigDecimal amount, String currency) {}
 ```
 
-- `public`: Acceso total para que la JVM pueda ejecutarlo.
+Un Record es, por defecto:
+- **Inmutable**: Sus campos no pueden cambiar una vez creados.
 
-- `static`: El método le pertenece a la clase. La JVM no necesita crear un objeto para empezar a correr el programa.
+- **Compacto**: Java genera automáticamente el constructor, los métodos de acceso, `equals`, `hashCode` y `toString`.
 
-- `void`: No devuelve ningún valor tras finalizar.
+- **Ideal para DTOs**: Es la forma perfecta de mover datos entre capas del sistema con total seguridad.
 
-- `String[] args`: Un Array de textos que permite pasar configuración al programa desde la consola
+### 8. Java Time API (`java.time`)
+Históricamente, manejar fechas en Java era un caos (`java.util.Date` era mutable y confuso). Desde Java 8 (y estándar en Java 17), usamos una API basada en la inmutabilidad y la claridad.
 
-## 9. Anatomía de una Clase y Modificadores
+| Clase | Uso Principal |
+|-------|---------------|
+| `LocalDate` | Fechas sin hora (ej. un día de pago, un cumpleaños). |
+| `LocalTime` | Horas sin fecha (ej. hora de cierre). |
+| `LocalDateTime` | Fecha y hora, pero "huérfana" de contexto geográfico. |
+| `Instant` | Un punto único en el tiempo (UTC). Es la "huella digital" de cuándo ocurrió algo. |
+| `ZonedDateTime` | Fecha y hora con una zona horaria específica (ej. `America/New_York`). |
+
+- Inmutabilidad: Todas estas clases son inmutables. Si le sumas un día a una fecha, la fecha original no cambia; recibes una nueva instancia. Esto evita errores en sistemas multihilo.
+
+#### 8.1 El error del "Servidor Local"
+Nunca uses `LocalDateTime` para guardar transacciones. Si tu servidor está en Nueva York y tu base de datos en Londres, el "ahora" será distinto.
+
+- **Solución**: Trabaja siempre con `Instant` (UTC) en la lógica de negocio y solo convierte a zona horaria local en la capa de presentación (la UI del usuario).
+
+### 9. El Contrato de Identidad: `equals()` y `hashCode()`
+Este es quizás el concepto más importante de Java para asegurar la integridad de los datos.
+
+En Java, el operador `==` compara referencias (si son el mismo objeto en memoria), no el contenido. Para comparar el "alma" o los datos de un objeto, usamos estos dos métodos:
+
+1. `equals(Object o)`: Es el método que usamos para decir: "Estos dos objetos son iguales porque sus valores (ID, código, etc.) coinciden", aunque estén en lugares distintos de la memoria.
+
+2. `hashCode()`: Es una función que traduce el contenido del objeto en un número entero.
+
+#### 9.1 La Regla de Oro (El Contrato):
+
+> Si dos objetos son iguales según el método `equals()`, obligatoriamente deben devolver el mismo número en el método `hashCode()`.
+
+#### ¿Por qué es vital?
+Si rompes este contrato, las estructuras de datos como los `HashMap` o `HashSet` dejarán de funcionar. Podrías intentar buscar un cliente en una lista y Java te diría que "no existe" simplemente porque su `hashCode` es distinto, aunque sus datos sean idénticos.
+
+## Modulo III - Orientación a Objetos Avanzada (El Contrato)
+En Java, una clase no es solo un "molde", es un perímetro de seguridad. El acceso a los datos debe ser restrictivo por defecto.
+
+### 10. Anatomía de una Clase y Modificadores
 Antes de crear lógica bancaria, debemos entender cómo se estructura un método y quién tiene permiso de entrar a él. Un método es una acción que el objeto puede realizar.
 
-### Estructura de un método:
+#### 10.1 Estructura de un método:
+Un método en un sistema crítico debe ser predecible:
 `[Modificador de Acceso] [Modificador de Estado] [Tipo de Retorno] [Nombre]([Parámetros])`
 
-- **Tipo de Retorno**: Puede ser un primitivo (`int`), un objeto (`String`,` Account`) o `void` si no devuelve nada.
+- **Tipo de Retorno**: Siempre prefiere objetos o Wrappers (`Long`, `BigDecimal`) sobre primitivos si el resultado puede ser opcional o nulo.
 
-- **Parámetros**: La información que el método necesita para trabajar (ej. `double price`).
+- **Parámetros**: La información que el método necesita para trabajar (ej. `double price`). Y deben ser lo más específicos posible para evitar errores de tipo.
 
-### Los 4 Modificadores de Acceso
-En banca, el acceso a los datos es crítico. Java usa estos niveles para decidir quién ve qué:
+#### 10.2 Los 4 Modificadores de Acceso
+En banca, el acceso a los datos es crítico. Java usa estos niveles para decidir quién ve qué, debes ver los modificadores como capas de una cebolla que protegen el núcleo (los datos):
 
 | Modificador | Clase | Paquete | Subclase (Heredero) | Mundo (Externo) | Uso en Banca |
 |-------------|-------|--------|-------------|--------------|------------|
@@ -161,28 +258,28 @@ En banca, el acceso a los datos es crítico. Java usa estos niveles para decidir
 | `private` | Sí | No | No | No | **Regla de oro**. Los saldos y claves siempre deben ser privados. |
 
 
-## 10. Los 4 Pilares de la POO (Programación Orientada a Objetos)
+### 11 Los 4 Pilares de la POO (Programación Orientada a Objetos)
 Si la Clase es el molde y el Objeto es el producto, estos pilares son las reglas de ingeniería para que tu software sea profesional y seguro.
 
 1. **Encapsulamiento**: Proteger los datos sensibles. Los atributos se marcan como `private` y se accede a ellos mediante métodos `public` (Getters/Setters) que validan la información.
 
-2. **Abstracción**: Simplificar la realidad. Definimos qué hace un sistema (ej. `procesarPago()`) sin obligar al usuario a entender la complejidad interna.
+2. **Abstracción**: Simplificar la realidad. Definimos qué hace un sistema (ej. `procesarPago()`) sin obligar al usuario a entender la complejidad interna. **En Java**: Ocultamos la complejidad interna y solo exponemos métodos que representen acciones de negocio claras.
 
 3. **Herencia**: Reutilizar lógica. Una `CuentaAhorro` hereda las propiedades de una `CuentaBancaria`.
 
 4. **Polimorfismo**: Un mismo comando, distintos comportamientos. El método `calcularComision()` actuará diferente si el objeto es una "Cuenta VIP" o una "Cuenta Estándar".
 
-### 11. Interfaces vs. Clases Abstractas: El Contrato Bancario
+### 12. Interfaces vs. Clases Abstractas: El Contrato Bancario
 En el nivel experto, no solo heredas código, sino que firmas **contratos de comportamiento**.
 
-### 11.1 La Clase Abstracta (`abstract class`)
+#### 12.1 La Clase Abstracta (`abstract class`)
 Es un "híbrido". Es un molde que no puede ser un producto final (no puedes hacer `new` de ella), pero tiene partes ya construidas.
 
 - **Cuándo usarla**: Cuando tienes una base común. Ejemplo: Una `AccountBank` genérica tiene la lógica de "ver saldo", pero el "cobrar comisión" es diferente para cada una.
 
 - En JPA: Se usan para crear "Entidades Base" que tienen campos comunes como `id` o `fecha_creacion`.
 
-### 11.2 La Interfaz (`interface`)
+#### 12.2 La Interfaz (`interface`)
 Es un contrato puro. No dice cómo se hacen las cosas, solo qué cosas se deben poder hacer.
 
 En Fintech: Son fundamentales. Definimos una interfaz `PaymentProcessor`. Luego, podemos tener una implementación para `Visa` y otra para `Stripe`. El sistema principal no sabe cuál usa, solo sabe que ambas cumplen el contrato.
@@ -193,16 +290,180 @@ En Fintech: Son fundamentales. Definimos una interfaz `PaymentProcessor`. Luego,
 | **Atributos** | Puede tener variables normales (estado). | Solo constantes (`public static final`). |
 | **Métodos** | Puede tener métodos con código y sin código. | Principalmente métodos sin código (hasta Java 8). |
 
-## 12. Java Collections Frameworks
+### 13. Enums: Tipado fuerte para Estados de Negocio
+En sistemas antiguos, los estados se manejaban con números (`1`, `2`, `3`) o texto (`"PENDIENTE"`, `"APROBADO"`). Esto es peligroso: un error de dedo (`"PENDIENE"`) puede detener un proceso financiero.
+
+En Java moderno, los **Enums** son clases especiales que representan un grupo de constantes, pero con **comportamiento**.
+
+- **Seguridad**: El compilador garantiza que solo uses los valores permitidos.
+- **Estado y Comportamiento**: Un Enum en Java puede tener atributos y métodos.
+
+```java
+public enum TransactionStatus {
+    PENDING(true),
+    APPROVED(false),
+    REJECTED(false);
+
+    private final boolean canBeCanceled;
+
+    TransactionStatus(boolean canBeCanceled) {
+        this.canBeCanceled = canBeCanceled;
+    }
+
+    public boolean canBeCanceled() {
+        return canBeCanceled;
+    }
+}
+```
+
+> Uso en Banca: Los Enums son el estándar para manejar tipos de moneda (USD, EUR), tipos de cuenta (SAVINGS, CHECKING) y ciclos de vida de una operació
+
+### Modulo IV - Estructuras de Datos y Lógica
+
+### 14. Generics: El "Contenedor Etiquetado"
+Los Genéricos permiten que las clases, interfaces y métodos operen sobre tipos de datos específicos sin perder la seguridad del tipado fuerte.
+
+- El Problema (**Pre-Java 5**): Se usaba la clase `Object`. Esto obligaba a realizar un Casting manual al recuperar datos. Si el programador se equivocaba de tipo, el sistema lanzaba una `ClassCastException` en producción (tiempo de ejecución).
+
+- La Solución: Los Genéricos trasladan el error al **tiempo de compilación**. Si intentas meter un `String` en una lista de `List<CreditCard>`, el código ni siquiera compilará.
+
+> 💡 Regla de Arquitecto: Los genéricos desaparecen en tiempo de ejecución (proceso llamado Type Erasure), por lo que su mayor beneficio es darte seguridad mientras escribes el código.
+
+#### 14.1 Anatomía de un Genérico
+Verás letras como `<T>`, `<E>` o `<K, V>`. No es código secreto, son "Placeholders" (espacios reservados).
+
+- `<T>`: Significa Type (Tipo). Se usa cuando una clase puede manejar cualquier tipo.
+- `<E>`: Significa Element (Elemento). Muy usado en listas.
+- `<K, V>`: Key (Llave) y Value (Valor). Se usa en los Mapas.
+
+### 15. Java Collections Frameworks
 Cuando los Arrays se quedan cortos por su tamaño fijo, usamos Colecciones: contenedores dinámicos que crecen según la necesidad.
 
-- `List` (**ArrayList**): Como un Array, pero dinámico. Permite duplicados y mantiene el orden de inserción.
+#### 15.1 `List` (ArrayList): El Registro Secuencial
+Es una lista ordenada que permite duplicados.
 
-- `Set` (**HashSet**): No permite duplicados. Ideal para listas de IDs únicos.
+- **Uso**: Cuando el orden de inserción importa (ej. el historial de movimientos de una cuenta).
 
-- `Map` (**HashMap**): Almacena pares Llave : Valor (ej. "DNI" : "Nombre de Usuario"). Es el buscador más rápido del lenguaje.
+- **Rendimiento**: Muy rápida para leer datos por índice, pero lenta para insertar elementos en el medio de una lista gigante.
 
-## 13. Anotaciones (@Metadata): Etiquetas Inteligentes
+#### 15.2 `Set` (HashSet): La Garantía de Unicidad
+Colección que **no permite duplicados**.
+
+- **La Clave**: Aquí es donde el **Contrato de** `equals()` y `hashCode()` cobra vida. Si intentas agregar dos objetos con el mismo ID, el `Set` usará esos métodos para detectar el duplicado y lo rechazará.
+
+- **Uso**: Listas de IDs únicos, códigos de moneda soportados, o roles de usuario.
+
+#### 15.3 `Map` (HashMap): El Buscador de Alto Rendimiento
+Almacena pares **Llave : Valor**.
+
+- **Uso**: Es el estándar para diccionarios de datos. Ejemplo: Buscar un objeto `Account` usando su `String accountNumber` como llave.
+
+- **Velocidad**: Es la estructura más rápida para búsquedas directas (O(1)).
+
+```mermaid
+graph LR
+    D[Input: BigDecimal/String] --> R[Record: DTO Inmutable]
+    R --> S[Service: Lógica POO]
+    S --> C{Collections}
+    C -->|Búsqueda rápida| Map[HashMap]
+    C -->|Evitar duplicados| Set[HashSet]
+    C -->|Historial| List[ArrayList]
+```
+
+### 16. `Optional<T>`: El fin del NullPointerException
+El creador de las referencias nulas llamó al `null` su "error del billón de dólares". En sistemas financieros, un `null` inesperado puede detener una dispersión de nómina.
+
+`Optional` es un contenedor que puede o no tener un valor.
+
+- **Enfoque**: Obliga al programador a pensar: "¿Qué pasa si este dato no existe?".
+
+` **Mal uso**: No lo uses en atributos de clase o parámetros de métodos.
+
+- **Buen uso**: Úsalo como tipo de retorno en métodos de búsqueda (ej. `public Optional<Account> findById(String id)`).
+
+### 17. Stream API: Procesamiento Declarativo
+Los Streams permiten procesar colecciones de datos de forma fluida, similar a una consulta SQL, pero en Java.
+
+**Ejemplo Fintech**: Sumar todos los saldos mayores a 1000 USD.
+
+```java
+BigDecimal total = accounts.stream()
+    .filter(acc -> acc.getBalance().compareTo(new BigDecimal("1000")) > 0)
+    .map(Account::getBalance)
+    .reduce(BigDecimal.ZERO, BigDecimal::add);
+```
+
+- `filter`: Descarta lo que no sirve.
+- `map`: Transforma el objeto (de Cuenta a Saldo).
+- `reduce`: Acumula el resultado (Suma).
+
+## Módulo IV: Estructuras de Datos y Lógica
+
+### 18. Arrays: La Primera Estructura de Datos
+Antes de usar `List` o `Set`, debemos entender el **Array**. Es la estructura de datos más básica y cercana al hardware en Java.
+
+- **Definición**: Una colección de elementos del mismo tipo almacenados en memoria de forma **contigua**.
+
+- **Características Clave**:
+
+    1. **Tamaño Fijo**: Una vez creado, no puede crecer ni encogerse.
+    2. **Acceso O(1)**: Si conoces el índice, acceder al dato es instantáneo.
+
+- **¿Por qué seguimos usándolos?** Las colecciones modernas (como `ArrayList`) usan un Array internamente. Los Arrays son más eficientes en uso de memoria y velocidad bruta, pero carecen de la flexibilidad de las Colecciones.
+
+> 💡 **Regla de Oro**: Usa Arrays solo cuando conozcas el tamaño exacto de antemano (ej. los meses del año o los días de la semana) y necesites el máximo rendimiento. Para todo lo demás, usa el **Collections Framework**.
+
+## Módulo V: Resiliencia y Herramientas
+Ahora que hemos reubicado los cimientos, procedemos con el último módulo. Estos son los puntos que redactaremos a continuación:
+
+1. **Gestión de Excepciones**: La anatomía del error. Diferencia crítica entre Checked y Unchecked en procesos financieros.
+
+2. **Anotaciones (@Metadata)**: Cómo Java "lee" instrucciones sobre el código (el puente hacia JPA y Spring).
+
+3. **Apache Maven**: El estándar industrial para construir, empaquetar y gestionar dependencias.
+
+### 19. Gestión de Excepciones: Resilencia ante el Fallo
+En Java, una **Excepción** es un evento inesperado que ocurre durante la ejecución de un programa y que interrumpe el flujo normal de las instrucciones.
+
+#### 19.1 La Jerarquía del Error
+- `Error`: Fallos catastróficos de la JVM (ej. `OutOfMemoryError`). No intentes atraparlos, el sistema debe morir.
+
+- `Exception`: Fallos de la aplicación que debes gestionar. Se dividen en:
+
+    - Checked (Verificadas): Obligatorias de manejar (ej. `SQLException`). El compilador te obliga a usar `try-catch` porque son fallos externos probables.
+
+    - **Unchecked (RuntimeException)**: Errores de lógica (ej. `NullPointerException`). No es obligatorio atraparlas, sino evitarlas con buen código.
+
+#### 19.2 La Anatomía del Try-Catch-Finally
+Java nos da una estructura para "atrapar" estos errores antes de que maten al programa.
+
+```java
+try {
+    // Código que puede fallar (ej. conectar al Core Bancario)
+} catch (SpecificException e) {
+    // Plan de contingencia: Loguear error y notificar
+} finally {
+    // SE EJECUTA SIEMPRE. Ideal para cerrar conexiones o liberar archivos.
+}
+```
+
+#### 19.3 La Jerarquía: No todos los errores son iguales
+Para ser un profesional, debes saber que Java organiza los errores en una familia:
+
+- `Error`: Son fallos catastróficos de la **JVM** (ej. se acabó la memoria RAM del servidor). **No puedes atraparlos**; si esto pasa, el programa muere.
+- `Exception`: **Estos son los que tú debes manejar**. Se dividen en dos:
+
+##### Tabla: Checked vs. Unchecked Exceptions
+
+| Tipo | Nombre | ¿Cuándo ocurre? | ¿Es obligatorio manejarla? | Ejemplo |
+|------|--------|-----------------|----------------------------|---------|
+| **Checked** | Verificadas | Errores externos (Bases de datos, Archivos). | **SÍ**. El compilador no te deja avanzar si no pones un `try-catch`. | `SQLException, IOException` |
+| **Unchecked** | No verificadas | Errores de lógica del programador. | **NO**. Pero deberías evitarlas con buena lógica. | `NullPointerException, ArithmeticException` |
+
+##### Propagación de Errores: El `throws`
+A veces, un método no quiere hacerse cargo del error y prefiere "pasarle la bola" al que lo llamó. Esto se hace con la palabra clave `throws`.
+
+### 20. Anotaciones (@Metadata): Etiquetas Inteligentes
 Las anotaciones son etiquetas que pegamos en el código para darle instrucciones al compilador o a un Framework (como JPA o Spring). No cambian la lógica del código, pero le dicen a Java: "Oye, este objeto tiene un tratamiento especial".
 
 ¿Por qué existen?
@@ -219,66 +480,12 @@ Las que verás en JPA:
 
     **Analogía**: Imagina que envías una caja por correo. El contenido es el código, pero las etiquetas de "FRÁGIL" o "ESTE LADO HACIA ARRIBA" son las anotaciones. No son el contenido, pero le dicen al transportista (JPA/Hibernate) cómo manejar la caja.
 
-### 14. Generics: El "Contenedor Etiquetado"
-Los Genéricos permiten que las clases, interfaces y métodos operen sobre tipos de datos específicos sin perder la seguridad del tipado fuerte.
-
-- El Problema (**Pre-Java 5**): Se usaba la clase `Object`. Esto obligaba a realizar un Casting manual al recuperar datos. Si el programador se equivocaba de tipo, el sistema lanzaba una `ClassCastException` en producción (tiempo de ejecución).
-
-- La Solución: Los Genéricos trasladan el error al tiempo de compilación. Si intentas meter un `Loan` en una lista de `CreditCard`, el código ni siquiera compilará.
-
-#### Anatomía de un Genérico
-Verás letras como `<T>`, `<E>` o `<K, V>`. No es código secreto, son "Placeholders" (espacios reservados).
-
-- `<T>`: Significa Type (Tipo). Se usa cuando una clase puede manejar cualquier tipo.
-- `<E>`: Significa Element (Elemento). Muy usado en listas.
-- `<K, V>`: Key (Llave) y Value (Valor). Se usa en los Mapas.
-
-### 15. ¿Qué es una Excepción?
-En Java, una **Excepción** es un evento inesperado que ocurre durante la ejecución de un programa y que interrumpe el flujo normal de las instrucciones.
-
-### La Anatomía del Try-Catch-Finally
-Java nos da una estructura para "atrapar" estos errores antes de que maten al programa.
-
-```java
-try {
-    // 1. EL INTENTO: Aquí pones el código "peligroso"
-    // (Ejemplo: Conectar al banco o dividir por cero)
-    int result = 100 / 0; 
-} 
-catch (ArithmeticException e) {
-    // 2. EL PLAN DE EMERGENCIA: Se ejecuta solo si algo falló en el 'try'
-    System.out.println("Error: No puedes dividir por cero, genio.");
-} 
-finally {
-    // 3. EL CIERRE: Se ejecuta SIEMPRE, haya error o no.
-    // (Ideal para cerrar conexiones a bases de datos)
-    System.out.println("Limpiando recursos...");
-}
-```
-
-### La Jerarquía: No todos los errores son iguales
-Para ser un profesional, debes saber que Java organiza los errores en una familia:
-
-- `Error`: Son fallos catastróficos de la **JVM** (ej. se acabó la memoria RAM del servidor). **No puedes atraparlos**; si esto pasa, el programa muere.
-- `Exception`: **Estos son los que tú debes manejar**. Se dividen en dos:
-
-#### Tabla: Checked vs. Unchecked Exceptions
-
-| Tipo | Nombre | ¿Cuándo ocurre? | ¿Es obligatorio manejarla? | Ejemplo |
-|------|--------|-----------------|----------------------------|---------|
-| **Checked** | Verificadas | Errores externos (Bases de datos, Archivos). | **SÍ**. El compilador no te deja avanzar si no pones un `try-catch`. | `SQLException, IOException` |
-| **Unchecked** | No verificadas | Errores de lógica del programador. | **NO**. Pero deberías evitarlas con buena lógica. | `NullPointerException, ArithmeticException` |
-
-### Propagación de Errores: El `throws`
-A veces, un método no quiere hacerse cargo del error y prefiere "pasarle la bola" al que lo llamó. Esto se hace con la palabra clave `throws`.
-
-
-## 15. Gestor de Dependencias - Apache Maven
+### 21. Gestor de Dependencias - Apache Maven
 En un entorno profesional y bancario, no construimos todo desde cero. Usamos librerías externas (JARs). Antiguamente, los programadores descargaban estas librerías manualmente, lo que causaba versiones incompatibles y errores difíciles de rastrear (el famoso "JAR Hell").
 
 **Maven** es una herramienta de gestión y automatización de proyectos Java. Se basa en el concepto de **POM (Project Object Model)**.
 
-### 15.1 ¿Qué problemas resuelve?
+#### 21.1 ¿Qué problemas resuelve?
 
 1. **Gestión de Dependencias**: Si necesitas JPA, Maven lo descarga por ti, junto con todas las otras librerías que JPA necesita para funcionar (dependencias transitivas).
 
@@ -286,10 +493,10 @@ En un entorno profesional y bancario, no construimos todo desde cero. Usamos lib
 
 3. **Ciclo de Vida**: Automatiza tareas como compilar, probar y empaquetar el código para producción.
 
-### 15.2 El archivo pom.xml: El ADN del proyecto
+#### 21.2 El archivo pom.xml: El ADN del proyecto
 Todo proyecto Maven tiene un archivo en la raíz llamado pom.xml. Es un archivo declarativo donde le dices a Maven qué necesita tu proyecto.
 
-#### Estructura básica de una dependencia en el POM:
+##### Estructura básica de una dependencia en el POM:
 ```xml
 <dependency>
     <groupId>org.hibernate</groupId> <artifactId>hibernate-core</artifactId>
@@ -297,20 +504,20 @@ Todo proyecto Maven tiene un archivo en la raíz llamado pom.xml. Es un archivo 
 </dependency>
 ```
 
-### 15.3 El Ciclo de Vida (Lifecycles)
+#### 21.3 El Ciclo de Vida (Lifecycles)
 Maven tiene fases predefinidas que se ejecutan en orden. Si ejecutas una fase, todas las anteriores se ejecutan automáticamente.
 
 | Fase | ¿Qué hace? |
 |------|------------|
 | `clean` | Borra la carpeta `target` (limpia archivos de compilaciones viejas). |
 | `compile` | Transforma tus `.java` en `.class`(Bytecode). |
-| `clean` | Ejecuta las pruebas unitarias para asegurar que el código bancario no tenga fallos. |
-| `clean` | Empaqueta el código compilado en un archivo JAR (Java Archive). |
-| `clean` | Guarda el JAR en tu repositorio local para que otros proyectos tuyos lo usen. |
-| `clean` | Sube el JAR al servidor del banco para que el sistema empiece a funcionar. |
+| `test` | Ejecuta las pruebas unitarias para asegurar que el código bancario no tenga fallos. |
+| `package` | Empaqueta el código compilado en un archivo JAR (Java Archive). |
+| `install` | Guarda el JAR en tu repositorio local para que otros proyectos tuyos lo usen. |
+| `deploy` | Sube el JAR al servidor del banco para que el sistema empiece a funcionar. |
 
 
-### 15.4 Los Repositorios: ¿De dónde baja las cosas?
+#### 21.4 Los Repositorios: ¿De dónde baja las cosas?
 Maven no tiene las librerías dentro; las busca en "almacenes":
 
 1. Repositorio Local: Una carpeta en tu propia computadora (.m2). La primera vez que pides algo, lo baja de internet y lo guarda aquí para no volver a descargarlo.
@@ -327,7 +534,7 @@ graph LR
     Local -- "Provee" --> PC
 ```
 
-### 15.5 Estructura Estándar de Carpetas
+#### 21.5 Estructura Estándar de Carpetas
 Para que un experto en Java sepa dónde mirar, Maven impone este orden:
 
 - `src/main/java`: Aquí va tu código fuente (`.java`).
@@ -337,6 +544,10 @@ Para que un experto en Java sepa dónde mirar, Maven impone este orden:
 - `src/test/java`: Aquí van tus pruebas para validar que el sistema no falle.
 
 - `target`: Carpeta donde Maven guarda el resultado final (el JAR compilado). Nunca se sube al control de versiones.
+
+
+
+
 
 ## L.1 ¿Qué es un **Servlet**??
 - Es una "Clase" especial de **Java** que se utiliza como punto intermedio entre una página **JSP** y el **servidor web** donde está alojada la lógica de una aplicación
