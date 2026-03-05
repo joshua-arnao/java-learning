@@ -719,4 +719,9 @@ luego del mapeo de entidades se debe de reflejar el mapeo en la unidad de persis
 Encargados de leer los mapeos que se colocan en cada una de las clases y colocarlo en la base de datos
 
 
+#### EntityManager
+Objeto de Hibernet y SpringData, se encarga de gestiona entidades se realiza operaciones CRUD, tiene contexto de peristencia
+
+
+
 
