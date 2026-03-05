@@ -1,5 +1,5 @@
 # JAVA - ☕
-- **[Módulo I: Entorno de Ejecución](#módulo-i-entorno-de-ejecución)**
+- **[Módulo I: Entorno de Ejecución](##módulo-i-entorno-de-ejecución)**
     1. [¿Qué es Java?](#1-qué-es-java)
     2. [Ecosistema (JDK, JRE, JVM)](#2-ecosistema-jdk-jre-jvm)
     3. [Sandbox y Flujo de Ejecución](#3-sandbox-y-flujo-de-ejecución)
@@ -652,11 +652,26 @@ Obtener el atributo usuario que esta en la sesión:
 ```
 
 
+### JDBC (Java Database Connectivity)
+Es una API (Interfaz de Programación de Aplicación) en Java que permitar a los desallores conectar sus aplicación Java a una base datos. JDBC propociona métdos para ejecutar consultar datos en una base de datos.
 
+```mermaid
+flowchart LR
+    A["Class<br/>Connections<br/>Credentials<br/>Queries"]
+    B["Driver<br/>Statement<br/>ResultSet"]
+    C["Map Function"]
+    D["DTO Class"]
 
-## ¿Que es Java Persistence API?
-JPA es un ORM(Object Relational Mapping) que tien como objetivo lograr la persistencia de datos entre una aplicación desarrollada en JAva y una base de datos.
-JPA busca **traducir el modelo de las clases Java** a **un modeloado relacional en una base de datos**, posibilitando al pogramador elegir quee clases u objetos quiere persistir.
+    A --- B
+    B --- C
+    C --- D
+
+    C -. transforms .-> D
+```
+
+### ¿Que es Java Persistence API?
+JPA es un ORM(Object Relational Mapping) que tiene como objetivo lograr la persistencia de datos entre una aplicación desarrollada en JAva y una base de datos.
+JPA busca **traducir el modelo de las clases Java** a **un modeloado relacional en una base de datos**, posibilitando al pogramador elegir quee clases u objetos quiere persistir. JPA proporciona una capa de abstracción sobre JDBC, permitiendo trabajar con onjetos Java en luhar directamente con la base de datos
 
 ### ¿Qué en un ORM?
 Es una herramienta que:
@@ -671,7 +686,7 @@ Es como un conjunto de reglas que dicen:
 - Cómo hacer consultas
 - Cómo manejar relaciones
 
-Pero JPA no hace el trabajo directamente.
+Pero JPA no hace el trabajo directamente. manipular objetos a nivel objeto
 
 ### Como funciona JPA
 JPA se vale de una serie de paeos que se deben realizar sobre cada uno de los elementos de una clase, los mims se reepresentan mendainte **annotations** (`@`).
@@ -701,3 +716,7 @@ JPA cuenta con proveedores de JPA, entre ellos: Eclipselink, Hibernate, Toplink 
 luego del mapeo de entidades se debe de reflejar el mapeo en la unidad de persistencia
 
 ### JPA Controllers
+Encargados de leer los mapeos que se colocan en cada una de las clases y colocarlo en la base de datos
+
+
+
