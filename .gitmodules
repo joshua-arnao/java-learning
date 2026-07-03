@@ -1,0 +1,6 @@
+[submodule "java-start"]
+	path = java-start
+	url = https://github.com/joshua-arnao/java-start.git
+[submodule "java-avanzado"]
+	path = java-avanzado
+	url = https://github.com/joshua-arnao/java-avanzado.git

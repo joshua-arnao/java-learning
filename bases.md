@@ -722,6 +722,69 @@ Encargados de leer los mapeos que se colocan en cada una de las clases y colocar
 #### EntityManager
 Objeto de Hibernet y SpringData, se encarga de gestiona entidades se realiza operaciones CRUD, tiene contexto de peristencia
 
+#### Hikary CP
+Es un pull manager gestiona las concexiones a la base de datos
+
+
+FecthType.EAGER - Carga ansiosa
+cuando se hace la busqueda trae toda al información
+```mermaid
+flowchart LR
+    Department -->|new| Employees
+
+    subgraph Employees
+        E1[Employee]
+        E2[Employee]
+        E3[Employee]
+    end
+
+    note1[FetchType.EAGER]
+    note2["@OneToOne / @ManyToOne"]
+
+    note1 -.-> Department
+    note2 -.-> Employees
+```
+
+@OneToOne valor por defecto
+@ManyToOne valor por defecto
+
+FecthType.LAZY - Carga peresoza
+```mermaid
+flowchart LR
+    A[Department]
+    B((get()))
+    C[Employee 1]
+    D[Employee 2]
+    E[Employee 3]
+
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+
+    F[FetchType.LAZY]
+    G[@ManyToMany]
+    H[@OneToMany]
+
+    F --- A
+    G --- C
+    H --- D
+```
+se carga la infomración poco a poco
+
+
+CascadeType.PERSIST: PERSISTE LA ENTIDAD PRINCIPAL TAMBIEN LAS RELACIONADAS
+CascadeType.MERGE: Fuciona los camnbios de la entidad principal y las entidades relacionadas.
+CascadeType.REMOVE: Se elimina la entidad principal y las entidades relacionadas.
+CascadeType.REFRESH: Actualiza la información la entidad principal y las entidades relacionadas
+CascadeType.DETACH: Cuando se desacopla de una entidad relacionada de una entidad principal 
+CascadeType.ALL:PERSIST, MERGE, REMOVE, REFRESH Y DETACH.: 
 
 
 
+como quiero que se propague mis entitades que se encuetran relacionadas entre si
+
+![alt text](image-2.png)
+
+
+Orphan removal: eliminación de los huerfanos(cuando se queda sin relación) se aplica en relación @OneToMany y @OneToOne
