@@ -693,7 +693,7 @@ JPA se vale de una serie de paeos que se deben realizar sobre cada uno de los el
 
 JPA cuenta con proveedores de JPA, entre ellos: Eclipselink, Hibernate, Toplink entre otros
 
-![alt text](image.png)
+![alt text](images/image.png)
 
 ### Annotations más usadas
 - `@Entity`: Especifica la creación de una entidad. Se coloca al incio de la definciión de una clase.
@@ -784,7 +784,7 @@ CascadeType.ALL:PERSIST, MERGE, REMOVE, REFRESH Y DETACH.:
 
 como quiero que se propague mis entitades que se encuetran relacionadas entre si
 
-![alt text](image-2.png)
+![alt text](images/image-2.png)
 
 
 Orphan removal: eliminación de los huerfanos(cuando se queda sin relación) se aplica en relación @OneToMany y @OneToOne
